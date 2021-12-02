@@ -1,4 +1,4 @@
-package cs601.project3;
+package cs601.project4;
 
 /**
  * Holds configuration information used to run program
@@ -10,14 +10,8 @@ public class Config {
     public int poolSize;
 
     public int searchPort;
-    public String reviewJson;
-    public String qaJson;
 
     public int chatPort;
     public String channelId;
     public String slackbotToken;
-
-    public void setSlackbotToken(String token){
-        slackbotToken = token;
-    }
 }

@@ -1,8 +1,8 @@
-package cs601.project3;
+package cs601.project4;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -10,10 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Allows client to post to Slack API
+ * allows user to search Project 1 inverted index
  * @author Wyatt Mumford
  */
-public class ChatApplication {
+public class SearchApplication {
     public static void main(String[] args) {
 
         //set up Config
@@ -22,10 +22,7 @@ public class ChatApplication {
         try {
             FileReader reader = new FileReader("Config.json");
             config = gson.fromJson(reader, Config.class);
-            BufferedReader tokenReader = new BufferedReader(new FileReader("SlackbotToken.txt"));
-            String token = tokenReader.readLine();
-            config.setSlackbotToken(token);
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -43,11 +40,14 @@ public class ChatApplication {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        LOGGER.info("Logging set up. Level: " + loggingLevel);
 
         //start server
-        int port = config.chatPort;
+        int port = config.searchPort;
         HTTPServer server = new HTTPServer(port, config);
-        server.addMapping("/slackbot", new ChatHandler());
+        //The request GET /reviewsearch will be dispatched to the
+        //handle method of the ReviewSearchHandler.
+        server.addMapping("/reviewsearch", new ReviewSearchHandler());
         server.startup();
     }
 }

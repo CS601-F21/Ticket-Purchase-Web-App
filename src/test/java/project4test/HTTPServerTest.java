@@ -1,6 +1,9 @@
-package project3test;
+package project4test;
 
-import cs601.project3.*;
+import cs601.project4.Config;
+import cs601.project4.HTTPServer;
+import cs601.project4.Handler;
+import cs601.project4.ReviewSearchHandler;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -57,9 +60,8 @@ public class HTTPServerTest {
         //server setup
         Config config = helpers.configSetup();
         int port = config.searchPort;
-        FileData data = new FileData();
         HTTPServer server = new HTTPServer(port, config);
-        ReviewSearchHandler reviewSearchHandler = new ReviewSearchHandler(data);
+        ReviewSearchHandler reviewSearchHandler = new ReviewSearchHandler();
         //call AddMapping()
         try {
             Method addMappingMethod = HTTPServer.class.getDeclaredMethod("addMapping", String.class, Handler.class);

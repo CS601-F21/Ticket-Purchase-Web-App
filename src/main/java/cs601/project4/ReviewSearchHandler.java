@@ -1,4 +1,4 @@
-package cs601.project3;
+package cs601.project4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,54 +11,6 @@ import java.util.logging.Level;
  * @author Wyatt Mumford
  */
 public class ReviewSearchHandler implements Handler{
-
-    private final FileData data;
-    //inverted index storing <word, <docID, frequency>>
-    private final InvertedIndex index;
-
-    /**
-     * Creates ReviewSearchHandler using FileData
-     * @param data data from json
-     */
-    public ReviewSearchHandler(FileData data){
-        this.data = data;
-        index = data.getReviewInvertedIndex();
-    }
-
-    /**
-     * finds reviews containing query
-     * @param query from client
-     * @return String of HTML page
-     */
-    private StringBuilder searchResults(String query){
-        ArrayList<String> ids = index.search(query);
-        //build html
-        StringBuilder resultPage = new StringBuilder("<!DOCTYPE html>\n" +
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
-                "<head>\n" +
-                "   <title>" + query + "</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "\n");
-
-        ArrayList<Document> docs;
-        if (ids == null){
-            resultPage.append("   <p>Term not found.</p>\n");
-        } else {
-            docs = data.idsToDocs(ids, FileData.REVIEW);
-            for (Document i : docs){
-                resultPage.append("   <p>")
-                        .append(HTTPServer.encodeHtml(i.toString()))
-                        .append("</p>\n");
-            }
-        }
-        resultPage.append("""
-
-                    </body>
-                    </html>""");
-        return resultPage;
-    }
-
 
     /**
      * handles /reviewsearch request
@@ -114,8 +66,7 @@ public class ReviewSearchHandler implements Handler{
         LOGGER.info("Query: " + query);
         //display search results
         if (query != null){
-            StringBuilder resultPage = searchResults(query);
-            writer.println(resultPage);
+            System.out.println("Results");
         }
     }
 }
