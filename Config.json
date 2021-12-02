@@ -1,0 +1,10 @@
+{
+  "logging":true,
+  "logFile":"LOGGER.log",
+  "poolSize":10,
+  "port":8080,
+  "slackbotToken":"",
+  "redirect_uri":"",
+  "client_id":"",
+  "client_secret":""
+}

@@ -65,7 +65,7 @@ public class HTTPServer {
                     return null;
                 }
                 //only support POST and GET
-                if (!requestLineParts[0].equals(HTTPConstants.POST) && !requestLineParts[0].equals(HTTPConstants.GET)){
+                if (!requestLineParts[0].equals(ServerConstants.POST) && !requestLineParts[0].equals(ServerConstants.GET)){
                     LOGGER.log(Level.SEVERE, "Only POST and GET supported.");
                     ServerUtils.send405(writer);
                     return null;
@@ -80,7 +80,7 @@ public class HTTPServer {
                     }
                 }
                 //versions don't match
-                if (!requestLineParts[2].equals(HTTPConstants.VERSION)){
+                if (!requestLineParts[2].equals(ServerConstants.VERSION)){
                     LOGGER.log(Level.SEVERE, "Wrong HTTP version.");
                     ServerUtils.send400(writer);
                     return null;
@@ -111,7 +111,7 @@ public class HTTPServer {
                     //shutdown server
                     if (requestLine[1].equals("/shutdown")){
                         ServerUtils.send200(writer);
-                        writer.println(HTTPConstants.SHUTDOWN_PAGE);
+                        writer.println(ServerConstants.SHUTDOWN_PAGE);
                         server.close();
 
                     //if nothing was wrong in validateRequest, pass to appropriate Handler

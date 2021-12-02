@@ -17,14 +17,7 @@ public class SearchApplication {
     public static void main(String[] args) {
 
         //set up Config
-        Gson gson = new Gson();
         Config config = new Config();
-        try {
-            FileReader reader = new FileReader("Config.json");
-            config = gson.fromJson(reader, Config.class);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
         //set up logger
         Logger LOGGER = Logger.getLogger(HTTPServer.class.getName());
@@ -43,7 +36,7 @@ public class SearchApplication {
         LOGGER.info("Logging set up. Level: " + loggingLevel);
 
         //start server
-        int port = config.searchPort;
+        int port = config.port;
         HTTPServer server = new HTTPServer(port, config);
         //The request GET /reviewsearch will be dispatched to the
         //handle method of the ReviewSearchHandler.

@@ -29,11 +29,11 @@ public class ReviewSearchHandler implements Handler{
 
         String query = null;
 
-        if (method.equals(HTTPConstants.GET)){
+        if (method.equals(ServerConstants.GET)){
             //empty GET request
              if (path.equals("/reviewsearch")) {
                 ServerUtils.send200(writer);
-                writer.println(HTTPConstants.REVIEW_SEARCH_PAGE);
+                writer.println(ServerConstants.REVIEW_SEARCH_PAGE);
             //GET request with query in URL
             } else {
                  if (!path.startsWith("/reviewsearch?query=") || path.contains("&")){

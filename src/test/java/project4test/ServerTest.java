@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test cases for HTTPServer
  * @author Wyatt Mumford
  */
-public class HTTPServerTest {
+public class ServerTest {
 
     TestHelpers helpers = new TestHelpers();
 
@@ -58,8 +58,8 @@ public class HTTPServerTest {
     @Test
     void testAddMapping() {
         //server setup
-        Config config = helpers.configSetup();
-        int port = config.searchPort;
+        Config config = new Config();
+        int port = config.port;
         HTTPServer server = new HTTPServer(port, config);
         ReviewSearchHandler reviewSearchHandler = new ReviewSearchHandler();
         //call AddMapping()
@@ -89,8 +89,8 @@ public class HTTPServerTest {
     @Test
     void testStartup(){
         //server setup
-        Config config = helpers.configSetup();
-        int port = config.searchPort;
+        Config config = new Config();
+        int port = config.port;
         HTTPServer server = new HTTPServer(port, config);
         //call startup()
         Thread serverThread = new Thread(server::startup);
@@ -117,9 +117,9 @@ public class HTTPServerTest {
     @Test
     void test404(){
         //server setup
-        Config config = helpers.configSetup();
-        int port = config.chatPort;
-        Thread serverThread = helpers.chatSetup(config);
+        Config config = new Config();
+        int port = config.port;
+        Thread serverThread = helpers.serverSetup(config);
 
         //send request to /badpage
         HttpClient client = HttpClient.newHttpClient();
@@ -144,9 +144,9 @@ public class HTTPServerTest {
     @Test
     void test405(){
         //server setup
-        Config config = helpers.configSetup();
-        int port = config.chatPort;
-        Thread serverThread = helpers.chatSetup(config);
+        Config config = new Config();
+        int port = config.port;
+        Thread serverThread = helpers.serverSetup(config);
 
         //send DELETE request
         HttpClient client = HttpClient.newHttpClient();

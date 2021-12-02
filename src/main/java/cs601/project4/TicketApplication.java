@@ -1,31 +1,33 @@
-package project4test;
+package cs601.project4;
 
-import cs601.project4.*;
+import com.google.gson.Gson;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
-
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Helper functions used in Test classes
+ * Driver class for Ticket purchase web application
+ * source: https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/example/login/LoginServer.java
  * @author Wyatt Mumford
  */
-public class TestHelpers {
+public class TicketApplication {
+    public static void main(String[] args) throws Exception {
 
-    /**
-     * Starts server on new thread
-     * @param config Config file
-     * @return thread running server
-     */
-    public Thread serverSetup(Config config){
+        //set up Config
+        Gson gson = new Gson();
+        Config config = new Config();
+        try {
+            FileReader reader = new FileReader("Config.json");
+            config = gson.fromJson(reader, Config.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //set up logger
         Logger LOGGER = Logger.getLogger(HTTPServer.class.getName());
@@ -59,34 +61,6 @@ public class TestHelpers {
         context.addServlet(LogoutServlet.class, "/logout");
 
         server.setHandler(context);
-
-        //start thread
-        Thread serverThread = new Thread(() -> {
-            try {
-                server.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        serverThread.start();
-        return serverThread;
-
-    }
-
-    /**
-     * send /shutdown to server, block until thread terminates
-     */
-    //TODO?
-    public void shutdown(int port, Thread thread){
-        HttpClient client = HttpClient.newHttpClient();
-        String uri = "http://localhost:" + port + "/shutdown";
-        HttpRequest request = HttpRequest.newBuilder(URI.create(uri)).build();
-
-        try {
-            client.send(request, HttpResponse.BodyHandlers.ofString());
-            thread.join();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        server.start();
     }
 }

@@ -33,7 +33,7 @@ public interface Handler {
                     linesLeft = false;
                 } else {
                     headers.add(header);
-                    if (header.startsWith(HTTPConstants.CONTENT_LENGTH)){
+                    if (header.startsWith(ServerConstants.CONTENT_LENGTH)){
                         contentLength = Integer.parseInt(header.split(" ")[1]);
                     }
                 }

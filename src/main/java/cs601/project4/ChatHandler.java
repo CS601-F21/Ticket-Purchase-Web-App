@@ -34,11 +34,11 @@ public class ChatHandler implements Handler {
 
         String message = null;
 
-        if (method.equals(HTTPConstants.GET)){
+        if (method.equals(ServerConstants.GET)){
             //empty GET request
             if (path.equals("/slackbot")) {
                 ServerUtils.send200(writer);
-                writer.println(HTTPConstants.SLACKBOT_PAGE);
+                writer.println(ServerConstants.SLACKBOT_PAGE);
                 //GET request with query in URL
             } else {
                 if (!path.startsWith("/slackbot?message=") || path.contains("&")){
@@ -80,7 +80,7 @@ public class ChatHandler implements Handler {
             HttpClient client = HttpClient.newHttpClient();
 
             String authToken = "Bearer " + HTTPServer.config.slackbotToken;
-            String body = "{\"channel\":\"" + HTTPServer.config.channelId + "\",\"text\":\"" + message + "\"}";
+            String body = "{\"channel\":\"" + "" + "\",\"text\":\"" + message + "\"}";
             LOGGER.info("Body: " + body);
             HttpRequest slackRequest = HttpRequest.newBuilder(URI.create("https://slack.com/api/chat.postMessage"))
                 .header("Content-type", "application/json")
@@ -96,7 +96,7 @@ public class ChatHandler implements Handler {
                 e.printStackTrace();
             }
 
-            writer.println(HTTPConstants.SLACKBOT_PAGE);
+            writer.println(ServerConstants.SLACKBOT_PAGE);
         }
     }
 }
