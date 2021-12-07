@@ -1,4 +1,4 @@
-package cs601.project4.Utilities;
+package cs601.project4.webserver.utilities;
 
 import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;

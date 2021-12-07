@@ -1,8 +1,8 @@
-package cs601.project4;
+package cs601.project4.webserver;
 
-import cs601.project4.Utilities.Config;
-import cs601.project4.Utilities.LoginUtils;
-import cs601.project4.Utilities.ServerConstants;
+import cs601.project4.webserver.utilities.Config;
+import cs601.project4.webserver.utilities.LoginUtils;
+import cs601.project4.webserver.utilities.ServerConstants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

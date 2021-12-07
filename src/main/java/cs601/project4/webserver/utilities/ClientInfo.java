@@ -1,4 +1,4 @@
-package cs601.project4.Utilities;
+package cs601.project4.webserver.utilities;
 
 /**
  * A class to maintain info about each client.

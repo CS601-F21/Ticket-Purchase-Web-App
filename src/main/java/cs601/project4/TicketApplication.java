@@ -1,8 +1,12 @@
 package cs601.project4;
 
 import com.google.gson.Gson;
-import cs601.project4.Utilities.Config;
-import cs601.project4.Utilities.ServerConstants;
+import cs601.project4.webserver.HomeServlet;
+import cs601.project4.webserver.LandingServlet;
+import cs601.project4.webserver.LoginServlet;
+import cs601.project4.webserver.LogoutServlet;
+import cs601.project4.webserver.utilities.Config;
+import cs601.project4.webserver.utilities.ServerConstants;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 

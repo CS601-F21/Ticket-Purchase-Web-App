@@ -1,4 +1,4 @@
-package cs601.project4.Utilities;
+package cs601.project4.webserver.utilities;
 
 /**
  * Holds configuration information used to run program

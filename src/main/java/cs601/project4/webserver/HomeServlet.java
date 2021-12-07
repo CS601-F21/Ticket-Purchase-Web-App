@@ -1,6 +1,6 @@
-package cs601.project4;
+package cs601.project4.webserver;
 
-import cs601.project4.Utilities.*;
+import cs601.project4.webserver.utilities.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,8 +44,5 @@ public class HomeServlet extends HttpServlet {
         resp.getWriter().println("<p><a href=\"/logout\">Sign out</a></p>");
 
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
-
-
     }
-
 }

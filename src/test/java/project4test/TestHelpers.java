@@ -1,8 +1,10 @@
 package project4test;
 
-import cs601.project4.*;
-import cs601.project4.Utilities.Config;
-import cs601.project4.Utilities.ServerConstants;
+import cs601.project4.webserver.utilities.Config;
+import cs601.project4.webserver.utilities.ServerConstants;
+import cs601.project4.webserver.LandingServlet;
+import cs601.project4.webserver.LoginServlet;
+import cs601.project4.webserver.LogoutServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
@@ -56,7 +58,8 @@ public class TestHelpers {
         // the default path will direct to a landing page with "Login with Slack" button
         context.addServlet(LandingServlet.class, "/");
         // Once authenticated, Slack will redirect the user back to /login
-        context.addServlet(HomeServlet.class, "/login");
+        context.addServlet(LoginServlet.class, "/login");
+        //TODO
         // handle logout
         context.addServlet(LogoutServlet.class, "/logout");
 
