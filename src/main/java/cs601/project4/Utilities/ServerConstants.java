@@ -48,6 +48,7 @@ public class ServerConstants {
             "  <title>Log in with Slack</title>\n" +
             "</head>\n" +
             "<body>\n" +
+            "<h1>Ticket-Get-It</h1>" +
             "\n";
 
     public static final String PAGE_FOOTER = "\n" +

@@ -13,10 +13,10 @@ import java.util.Map;
 /**
  * Implements logic for the /login path where Slack will redirect requests after
  * the user has entered their auth info.
- * source: https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/utilities/LoginUtilities.java
+ * source: https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/example/login/LoginServlet.java
+ * @author Wyatt Mumford
  */
 public class LoginServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -28,7 +28,8 @@ public class LoginServlet extends HttpServlet {
         if(clientInfoObj != null) {
             // already authed, no need to log in
             resp.getWriter().println(ServerConstants.PAGE_HEADER);
-            resp.getWriter().println("<h1>You have already been authenticated</h1>");
+            resp.getWriter().println("<p>You are already authenticated.</p>");
+            resp.getWriter().println("<p><a href=\"/home\">Return to home page</a>");
             resp.getWriter().println(ServerConstants.PAGE_FOOTER);
             return;
         }
@@ -55,14 +56,16 @@ public class LoginServlet extends HttpServlet {
         if(clientInfo == null) {
             resp.setStatus(HttpStatus.OK_200);
             resp.getWriter().println(ServerConstants.PAGE_HEADER);
-            resp.getWriter().println("<h1>Oops, login unsuccessful</h1>");
+            resp.getWriter().println("<p>You are not authenticated.</p>");
+            resp.getWriter().println("<p><a href=\"/\">Log in</a></p>");
             resp.getWriter().println(ServerConstants.PAGE_FOOTER);
         } else {
             req.getSession().setAttribute(ServerConstants.CLIENT_INFO_KEY, clientInfo);
             resp.setStatus(HttpStatus.OK_200);
             resp.getWriter().println(ServerConstants.PAGE_HEADER);
-            resp.getWriter().println("<h1>Hello, " + clientInfo.getName() + "</h1>");
-            resp.getWriter().println("<p><a href=\"/logout\">Signout</a>");
+            resp.getWriter().println("<p>Hello, " + clientInfo.getName() + ".");
+            resp.getWriter().println("You have been successfully logged in.</p>");
+            resp.getWriter().println("<p><a href=\"/home\">Continue to home page</a></p>");
             resp.getWriter().println(ServerConstants.PAGE_FOOTER);
 
         }

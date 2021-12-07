@@ -56,7 +56,7 @@ public class TestHelpers {
         // the default path will direct to a landing page with "Login with Slack" button
         context.addServlet(LandingServlet.class, "/");
         // Once authenticated, Slack will redirect the user back to /login
-        context.addServlet(LoginServlet.class, "/login");
+        context.addServlet(HomeServlet.class, "/login");
         // handle logout
         context.addServlet(LogoutServlet.class, "/logout");
 

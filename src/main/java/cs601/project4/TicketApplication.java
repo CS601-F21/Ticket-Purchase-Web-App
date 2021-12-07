@@ -53,14 +53,19 @@ public class TicketApplication {
 
         //start server
         int port = config.port;
+        LOGGER.info("Starting server...");
         Server server = new Server(port);
 
         // the default path will direct to a landing page with "Login with Slack" button
         context.addServlet(LandingServlet.class, "/");
         // Once authenticated, Slack will redirect the user back to /login
         context.addServlet(LoginServlet.class, "/login");
+        // homepage
+        context.addServlet(HomeServlet.class, "/home");
         // handle logout
         context.addServlet(LogoutServlet.class, "/logout");
+
+        //TODO:shutdown
 
         server.setHandler(context);
         server.start();

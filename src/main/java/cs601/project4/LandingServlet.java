@@ -28,8 +28,10 @@ public class LandingServlet extends HttpServlet {
         Object clientInfoObj = req.getSession().getAttribute(ServerConstants.CLIENT_INFO_KEY);
         if(clientInfoObj != null) {
             // already authed, no need to log in
+            resp.setStatus(HttpStatus.OK_200);
             resp.getWriter().println(ServerConstants.PAGE_HEADER);
-            resp.getWriter().println("<h1>You have already been authenticated</h1>");
+            resp.getWriter().println("<p>You have already been authenticated.</p>");
+            resp.getWriter().println("<p><a href=\"/home\">Return to home</a></p>");
             resp.getWriter().println(ServerConstants.PAGE_FOOTER);
             return;
         }
@@ -66,7 +68,7 @@ public class LandingServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         //TODO::
         writer.println(ServerConstants.PAGE_HEADER);
-        writer.println("<h1>Please log in with Slack:</h1>");
+        writer.println("<p>Please log in with Slack:</p>");
         writer.println("<a href=\""+url+"\"><img src=\"" + ServerConstants.BUTTON_URL +"\"/></a>");
         writer.println(ServerConstants.PAGE_FOOTER);
     }

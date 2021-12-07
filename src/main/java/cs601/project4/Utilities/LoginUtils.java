@@ -91,6 +91,12 @@ public class LoginUtils {
         return map;
     }
 
+    /**
+     * Verify response, returning ClientInfo
+     * @param map
+     * @param sessionId
+     * @return
+     */
     public static ClientInfo verifyTokenResponse(Map<String, Object> map, String sessionId) {
 
         // verify ok: true
