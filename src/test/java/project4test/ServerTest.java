@@ -1,7 +1,7 @@
 package project4test;
 
 import com.google.gson.Gson;
-import cs601.project4.webserver.utilities.Config;
+import cs601.project4.Config;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;

@@ -1,6 +1,6 @@
 package project4test;
 
-import cs601.project4.webserver.utilities.Config;
+import cs601.project4.Config;
 import cs601.project4.webserver.utilities.ServerConstants;
 import cs601.project4.webserver.LandingServlet;
 import cs601.project4.webserver.LoginServlet;

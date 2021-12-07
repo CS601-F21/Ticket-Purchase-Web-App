@@ -12,10 +12,10 @@ import java.util.Map;
  * sources: https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/utilities/LoginUtilities.java
  * @author Wyatt Mumford
  */
-public class LoginUtils {
+public class ServerUtils {
 
     // for parsing JSON
-        private static final Gson gson = new Gson();
+    private static final Gson gson = new Gson();
     /**
      * Hash the session ID to generate a nonce.
      * Uses Apache Commons Codec

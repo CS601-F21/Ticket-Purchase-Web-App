@@ -1,4 +1,4 @@
-package cs601.project4.webserver.utilities;
+package cs601.project4;
 
 /**
  * Holds configuration information used to run program
@@ -20,10 +20,9 @@ public class Config {
     public String client_id;
     public String client_secret;
 
-    /**
-     * Reads config json file, populating fields
-     */
-    public Config(){
+    public String database;
+    public String username;
+    public String password;
 
-    }
+
 }

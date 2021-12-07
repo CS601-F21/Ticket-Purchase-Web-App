@@ -6,5 +6,8 @@
   "slackbotToken":"",
   "redirect_uri":"https://9307-216-38-133-190.ngrok.io/login",
   "client_id":"2464212157.2687490706561",
-  "client_secret":"61b57d6ad58482e18465223c9d12dddb"
+  "client_secret":"",
+  "database":"",
+  "username":"",
+  "password":""
 }

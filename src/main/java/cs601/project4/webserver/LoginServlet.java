@@ -1,5 +1,6 @@
 package cs601.project4.webserver;
 
+import cs601.project4.Config;
 import cs601.project4.webserver.utilities.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -45,13 +46,13 @@ public class LoginServlet extends HttpServlet {
         // they'll be redirected back to your service along with the typical code that signifies
         // a temporary access code. Exchange that code for a real access token using the
         // /openid.connect.token method.
-        String url = LoginUtils.generateSlackTokenURL(config.client_id, config.client_secret, code, config.redirect_uri);
+        String url = ServerUtils.generateSlackTokenURL(config.client_id, config.client_secret, code, config.redirect_uri);
 
         // Make the request to the token API
         String responseString = HTTPFetcher.doGet(url, null);
-        Map<String, Object> response = LoginUtils.jsonStrToMap(responseString);
+        Map<String, Object> response = ServerUtils.jsonStrToMap(responseString);
 
-        ClientInfo clientInfo = LoginUtils.verifyTokenResponse(response, sessionId);
+        ClientInfo clientInfo = ServerUtils.verifyTokenResponse(response, sessionId);
 
         if(clientInfo == null) {
             resp.setStatus(HttpStatus.OK_200);
