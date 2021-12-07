@@ -1,9 +1,4 @@
-package cs601.project4;
-
-import com.google.gson.Gson;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+package cs601.project4.Utilities;
 
 /**
  * Holds configuration information used to run program
@@ -29,13 +24,6 @@ public class Config {
      * Reads config json file, populating fields
      */
     public Config(){
-        Gson gson = new Gson();
-        Config config = new Config();
-        try {
-            FileReader reader = new FileReader("Config.json");
-            config = gson.fromJson(reader, Config.class);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
 }

@@ -1,20 +1,16 @@
 package project4test;
 
-import cs601.project4.Config;
-import cs601.project4.HTTPServer;
-import cs601.project4.Handler;
-import cs601.project4.ReviewSearchHandler;
+import com.google.gson.Gson;
+import cs601.project4.Utilities.Config;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -41,74 +37,15 @@ public class ServerTest {
         !@#$%^&amp;*()&lt;&gt;&#39;&quot;""";
         String encodedBody = null;
         //call encodeHtml()
-        try {
+ /**       try {
             Method addMappingMethod = HTTPServer.class.getDeclaredMethod("encodeHtml", String.class);
             addMappingMethod.setAccessible(true);
             encodedBody = (String) addMappingMethod.invoke(null, body);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
-        }
+        } */
         assertEquals(correctBody, encodedBody);
 
-    }
-
-    /**
-     * Tests that HTTPServer.addMapping() properly adds handler to handlers array
-     */
-    @Test
-    void testAddMapping() {
-        //server setup
-        Config config = new Config();
-        int port = config.port;
-        HTTPServer server = new HTTPServer(port, config);
-        ReviewSearchHandler reviewSearchHandler = new ReviewSearchHandler();
-        //call AddMapping()
-        try {
-            Method addMappingMethod = HTTPServer.class.getDeclaredMethod("addMapping", String.class, Handler.class);
-            addMappingMethod.setAccessible(true);
-            addMappingMethod.invoke(server, "/path",reviewSearchHandler);
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        //check handlers hashmap for reviewSearchHandler
-        //source: http://tutorials.jenkov.com/java-reflection/private-fields-and-methods.html
-        HashMap<String, Handler> handlers = null;
-        try {
-            Field privateHashmapField = HTTPServer.class.getDeclaredField("handlers");
-            privateHashmapField.setAccessible(true);
-            handlers = (HashMap<String, Handler>) privateHashmapField.get(server);
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        assertEquals(handlers.get("/path"), reviewSearchHandler);
-    }
-        /**
-     * Tests that HTTPServer.startup() properly listens for connections on port
-     */
-    @Test
-    void testStartup(){
-        //server setup
-        Config config = new Config();
-        int port = config.port;
-        HTTPServer server = new HTTPServer(port, config);
-        //call startup()
-        Thread serverThread = new Thread(server::startup);
-        serverThread.start();
-        
-        //send request to /shutdown
-        HttpClient client = HttpClient.newHttpClient();
-        String uri = "http://localhost:" + port + "/shutdown";
-        HttpRequest request = HttpRequest.newBuilder(URI.create(uri))
-                .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            serverThread.join();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        assertEquals(200, response.statusCode());
     }
 
     /**
@@ -117,7 +54,17 @@ public class ServerTest {
     @Test
     void test404(){
         //server setup
+
+        //set up Config
+        Gson gson = new Gson();
         Config config = new Config();
+        try {
+            FileReader reader = new FileReader("Config.json");
+            config = gson.fromJson(reader, Config.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         int port = config.port;
         Thread serverThread = helpers.serverSetup(config);
 
@@ -143,8 +90,17 @@ public class ServerTest {
      */
     @Test
     void test405(){
-        //server setup
+
+        //set up Config
+        Gson gson = new Gson();
         Config config = new Config();
+        try {
+            FileReader reader = new FileReader("Config.json");
+            config = gson.fromJson(reader, Config.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         int port = config.port;
         Thread serverThread = helpers.serverSetup(config);
 

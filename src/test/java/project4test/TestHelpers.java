@@ -1,6 +1,8 @@
 package project4test;
 
 import cs601.project4.*;
+import cs601.project4.Utilities.Config;
+import cs601.project4.Utilities.ServerConstants;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
@@ -28,7 +30,7 @@ public class TestHelpers {
     public Thread serverSetup(Config config){
 
         //set up logger
-        Logger LOGGER = Logger.getLogger(HTTPServer.class.getName());
+        Logger LOGGER = Logger.getLogger(Server.class.getName());
         Level loggingLevel;
         if (config.logging){
             loggingLevel = Level.ALL;

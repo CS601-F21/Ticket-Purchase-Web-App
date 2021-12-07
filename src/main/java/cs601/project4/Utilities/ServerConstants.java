@@ -1,4 +1,4 @@
-package cs601.project4;
+package cs601.project4.Utilities;
 
 /**
  * A helper class to store various constants used for the HTTP server.

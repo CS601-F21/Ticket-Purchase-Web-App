@@ -1,6 +1,8 @@
 package cs601.project4;
 
 import com.google.gson.Gson;
+import cs601.project4.Utilities.Config;
+import cs601.project4.Utilities.ServerConstants;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
@@ -30,7 +32,7 @@ public class TicketApplication {
         }
 
         //set up logger
-        Logger LOGGER = Logger.getLogger(HTTPServer.class.getName());
+        Logger LOGGER = Logger.getLogger(TicketApplication.class.getName());
         Level loggingLevel;
         if (config.logging){
             loggingLevel = Level.ALL;

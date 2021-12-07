@@ -1,5 +1,8 @@
 package cs601.project4;
 
+import cs601.project4.Utilities.Config;
+import cs601.project4.Utilities.LoginUtils;
+import cs601.project4.Utilities.ServerConstants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,18 +54,19 @@ public class LandingServlet extends HttpServlet {
          * the ID Token. Sufficient entropy MUST be present in the nonce values used to prevent attackers
          * from guessing values. For implementation notes, see Section 15.5.2.
          */
-        String nonce = ServerUtils.generateNonce(state);
+        String nonce = LoginUtils.generateNonce(state);
 
         // Generate url for request to Slack
-        String url = ServerUtils.generateSlackAuthorizeURL(config.client_id,
+        String url = LoginUtils.generateSlackAuthorizeURL(config.client_id,
                 state,
                 nonce,
                 config.redirect_uri);
 
         resp.setStatus(HttpStatus.OK_200);
         PrintWriter writer = resp.getWriter();
+        //TODO::
         writer.println(ServerConstants.PAGE_HEADER);
-        writer.println("<h1>Welcome to the Login with Slack Demo Application</h1>");
+        writer.println("<h1>Please log in with Slack:</h1>");
         writer.println("<a href=\""+url+"\"><img src=\"" + ServerConstants.BUTTON_URL +"\"/></a>");
         writer.println(ServerConstants.PAGE_FOOTER);
     }

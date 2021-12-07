@@ -4,7 +4,7 @@
   "poolSize":10,
   "port":8080,
   "slackbotToken":"",
-  "redirect_uri":"",
-  "client_id":"",
-  "client_secret":""
+  "redirect_uri":"https://0e8c-216-38-133-190.ngrok.io/login",
+  "client_id":"2464212157.2687490706561",
+  "client_secret":"61b57d6ad58482e18465223c9d12dddb"
 }
