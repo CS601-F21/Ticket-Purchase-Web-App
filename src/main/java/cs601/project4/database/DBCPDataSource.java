@@ -17,11 +17,10 @@ public class DBCPDataSource {
     // Apache commons connection pool implementation
     private static BasicDataSource ds = new BasicDataSource();
 
-    /**TODO
-     *
-     * @param config
+    /**
+     * TODO
      */
-    public void initialize(Config config){
+    public static void initialize(Config config){
         ds.setUrl("jdbc:mysql://localhost:3306/" + config.database);
         ds.setUsername(config.username);
         ds.setPassword(config.password);
@@ -29,12 +28,13 @@ public class DBCPDataSource {
         ds.setMaxIdle(10);
     }
 
+
     /**
      * Return a Connection from the pool.
      * @return
      * @throws SQLException
      */
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
 }

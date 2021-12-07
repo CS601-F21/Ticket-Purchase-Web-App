@@ -125,7 +125,8 @@ public class ServerUtils {
 
         // extract name from response
         String username = (String) payloadMap.get(ServerConstants.NAME_KEY);
-        return new ClientInfo(username);
+        String email = (String) payloadMap.get(ServerConstants.EMAIL_KEY);
+        return new ClientInfo(username, email);
     }
 
     /**

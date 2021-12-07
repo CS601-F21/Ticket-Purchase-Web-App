@@ -40,11 +40,44 @@ public class EventServlet extends HttpServlet {
         resp.setStatus(HttpStatus.OK_200);
         resp.getWriter().println(ServerConstants.PAGE_HEADER);
 
-        //show tickets
-        resp.getWriter().println("<h2>Events</h2>");
-        //TODO:
-        resp.getWriter().println("<p><a href=\"/home\">Return to home</a></p>");
 
+        String path = req.getServletPath();
+        //create new event
+        if (path == "/event/create") {
+            //TODO: min date
+            String form = """
+                    <form action="/event/create">
+                      <label for="name">Event name:</label><br/>
+                      <input type="text" id="name" name="name" maxlength="255" required="true"><br/>
+                      
+                      <label for="description">Description:</label><br/>
+                      <input type="text" id="description" name="description" maxlength="512" required="true"><br/>
+                      
+                      <label for="datetime">Date and time:</label><br/>
+                      <input type="datetime-local" id="datetime" name="datetime" min='2021-01-01' required="true"><br/> 
+                      
+                      <label for="base_price">Base Price:</label><br/>
+                      <input type="text" id="base_price" name="base_price"
+                        pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99" required="true">
+                      
+                      <input type="submit" value="Submit">
+                    </form>
+                    """;
+            resp.getWriter().println(form);
+        }else if (path.startsWith("/event/create/")){
+            //add event to database
+            //TODO::
+            resp.getWriter().println("Event created");
+        } else {
+            //show all events
+            resp.getWriter().println("<h2>Events:</h2>");
+            //TODO:
+
+            resp.getWriter().println("<p><a href=\"/event/create\">Create new event</a></p>");
+
+        }
+        resp.getWriter().println("<p><a href=\"/home\">Return to home</a></p>");
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }
+
 }

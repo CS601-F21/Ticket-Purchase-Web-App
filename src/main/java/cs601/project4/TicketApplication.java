@@ -1,10 +1,8 @@
 package cs601.project4;
 
 import com.google.gson.Gson;
-import cs601.project4.webserver.HomeServlet;
-import cs601.project4.webserver.LandingServlet;
-import cs601.project4.webserver.LoginServlet;
-import cs601.project4.webserver.LogoutServlet;
+import cs601.project4.database.DBCPDataSource;
+import cs601.project4.webserver.*;
 import cs601.project4.webserver.utilities.ServerConstants;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -50,6 +48,21 @@ public class TicketApplication {
         }
         LOGGER.info("Logging set up. Level: " + loggingLevel);
 
+        //set up database
+        LOGGER.info("Setting up database connection...");
+        DBCPDataSource.initialize(config);
+
+        //TODO:
+        /*
+        try (Connection connection = DBCPDataSource.getConnection()){
+            DatabaseManager.executeInsertEvent(connection,
+                    "Concert",
+                    "1000-01-01 00:00:00",
+                    "This is a fun concert event.",
+                    55.55,
+                    "billybob@gmail.com");
+        }
+*/
         // make the config information available across servlets by setting an attribute in the context
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setAttribute(ServerConstants.CONFIG_KEY, config);
@@ -65,6 +78,13 @@ public class TicketApplication {
         context.addServlet(LoginServlet.class, "/login");
         // homepage
         context.addServlet(HomeServlet.class, "/home");
+        //profile
+        context.addServlet(ProfileServlet.class, "/profile");
+        context.addServlet(ProfileServlet.class, "/profile/update");
+        context.addServlet(ProfileServlet.class, "/profile/transfer");
+        //events
+        context.addServlet(EventServlet.class, "/event");
+        context.addServlet(EventServlet.class, "/event/create");
         // handle logout
         context.addServlet(LogoutServlet.class, "/logout");
 

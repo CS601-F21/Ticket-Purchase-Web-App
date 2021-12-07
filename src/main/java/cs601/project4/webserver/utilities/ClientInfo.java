@@ -7,19 +7,31 @@ package cs601.project4.webserver.utilities;
 public class ClientInfo {
 
     private String name;
+    private String email;
 
     /**
      * Constructor
      * @param name
+     * @param email
      */
-    public ClientInfo(String name) {
+    public ClientInfo(String name, String email) {
         this.name = name;
+        this.email = email;
     }
     /**
      * return name
-     * @return
+     * @return name on slack profile
      */
     public String getName() {
         return name;
     }
+
+    /**
+     * return email
+     * @return email address on slack profile
+     */
+    public String getEmail() {
+        return email;
+    }
+
 }
