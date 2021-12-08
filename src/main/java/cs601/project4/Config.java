@@ -7,11 +7,8 @@ package cs601.project4;
 public class Config {
     public boolean logging;
     public String logFile;
-    public int poolSize;
 
     public int port;
-
-    public String slackbotToken;
 
     // These variable names violate Java style guidelines
     // in order to be consistent with the naming conventions

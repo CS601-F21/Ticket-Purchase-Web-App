@@ -25,19 +25,34 @@ public class DatabaseManager {
     public static void executeInsertEvent
         (Connection con,
          String name,
-         String startdate,
+         Timestamp startdate,
          String description,
-         double base_price,
-/*         float student_price,
-         float vip_price, */
+         Double base_price,
+         Double student_price,
+         Double vip_price,
          String creator) throws SQLException {
-        String insertContactSql = "INSERT INTO events (name, startdate, description, base_price, creator) VALUES (?, ?, ?, ?, ?);";
+
+        //set parameters
+        String insertContactSql =
+            "INSERT INTO events (name, startdate, description, base_price, student_price, vip_price, creator) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement insertContactStmt = con.prepareStatement(insertContactSql);
         insertContactStmt.setString(1, name);
-        insertContactStmt.setString(2, startdate);
+        insertContactStmt.setTimestamp(2, startdate);
         insertContactStmt.setString(3, description);
         insertContactStmt.setDouble(4, base_price);
-        insertContactStmt.setString(5, creator);
+        if (student_price != null){
+            insertContactStmt.setDouble(5, student_price);
+        } else {
+            insertContactStmt.setNull(5, Types.DOUBLE);
+        }
+        if (vip_price != null){
+            insertContactStmt.setDouble(6, vip_price);
+        } else {
+            insertContactStmt.setNull(6, Types.DOUBLE);
+        }
+        insertContactStmt.setString(7, creator);
+
         insertContactStmt.executeUpdate();
     }
 

@@ -50,16 +50,18 @@ public class ProfileServlet extends HttpServlet {
             String name = "<p>Name: " + clientInfo.getName() + " "
                     + """
                     <form action="/profile/update">
-                      <label for="name">Update name:</label><br/>
-                      <input type="text" id="name" name="name" maxlength="255" required="true"><br/>
+                      <label for="name">Update name:</label>
+                      <input type="text" id="name" name="name" maxlength="255" required="true">
+                      <input type="submit" value="Submit">
                     </form></p>
                     """;
             resp.getWriter().println(name);
             String email = "<p>Email: " + clientInfo.getName() + " "
                     + """
                     <form action="/profile/update">
-                      <label for="email">Update email:</label><br/>
-                      <input type="text" id="email" name="email" maxlength="255" required="true"><br/>
+                      <label for="email">Update email:</label>
+                      <input type="text" id="email" name="email" maxlength="255" required="true">
+                      <input type="submit" value="Submit">
                     </form></p>
                     """;
             resp.getWriter().println(email);

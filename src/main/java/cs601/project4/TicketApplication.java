@@ -53,16 +53,7 @@ public class TicketApplication {
         DBCPDataSource.initialize(config);
 
         //TODO:
-        /*
-        try (Connection connection = DBCPDataSource.getConnection()){
-            DatabaseManager.executeInsertEvent(connection,
-                    "Concert",
-                    "1000-01-01 00:00:00",
-                    "This is a fun concert event.",
-                    55.55,
-                    "billybob@gmail.com");
-        }
-*/
+
         // make the config information available across servlets by setting an attribute in the context
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setAttribute(ServerConstants.CONFIG_KEY, config);
