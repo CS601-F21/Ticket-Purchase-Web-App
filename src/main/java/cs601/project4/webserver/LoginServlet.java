@@ -1,6 +1,8 @@
 package cs601.project4.webserver;
 
 import cs601.project4.Config;
+import cs601.project4.database.DBCPDataSource;
+import cs601.project4.database.DatabaseManager;
 import cs601.project4.webserver.utilities.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.http.HttpStatus;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -54,20 +59,38 @@ public class LoginServlet extends HttpServlet {
 
         ClientInfo clientInfo = ServerUtils.verifyTokenResponse(response, sessionId);
 
+        resp.setStatus(HttpStatus.OK_200);
+        resp.getWriter().println(ServerConstants.PAGE_HEADER);
+
         if(clientInfo == null) {
-            resp.setStatus(HttpStatus.OK_200);
-            resp.getWriter().println(ServerConstants.PAGE_HEADER);
             resp.getWriter().println("<p>You are not authenticated.</p>");
             resp.getWriter().println("<p><a href=\"/\">Log in</a></p>");
-            resp.getWriter().println(ServerConstants.PAGE_FOOTER);
         } else {
+
+            try (Connection connection = DBCPDataSource.getConnection()) {
+                ResultSet result = DatabaseManager.executeSelectUser(connection, clientInfo);
+                if (!result.next()){
+                    //add new user to database
+                    resp.getWriter().println("<p>Hello, " + clientInfo.getName() + ".</p>");
+                    resp.getWriter().println("<p>Welcome to Ticket-Get-It. Creating your account now...</p>");
+
+                    DatabaseManager.executeInsertUser(connection, clientInfo);
+
+                } else {
+                    resp.getWriter().println("<p>Welcome back, " + clientInfo.getName() + ".</p>");
+                    resp.getWriter().println("<p>You have been successfully logged in.</p>");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+
+
             req.getSession().setAttribute(ServerConstants.CLIENT_INFO_KEY, clientInfo);
-            resp.setStatus(HttpStatus.OK_200);
-            resp.getWriter().println(ServerConstants.PAGE_HEADER);
-            resp.getWriter().println("<p>Hello, " + clientInfo.getName() + ".");
-            resp.getWriter().println("You have been successfully logged in.</p>");
+
+
             resp.getWriter().println("<p><a href=\"/home\">Continue to home page</a></p>");
-            resp.getWriter().println(ServerConstants.PAGE_FOOTER);
         }
+        resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Landing page that allows a user to request to login with Slack.
+ * Landing page that allows a user to request to log in with Slack.
  * source: https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/example/login/LandingServlet.java
  */
 public class LandingServlet extends HttpServlet {
@@ -39,28 +39,18 @@ public class LandingServlet extends HttpServlet {
         // retrieve the config info from the context
         Config config = (Config) req.getServletContext().getAttribute(ServerConstants.CONFIG_KEY);
 
-        /** From the OpenID spec:
-         * state
-         * RECOMMENDED. Opaque value used to maintain state between the request and the callback.
-         * Typically, Cross-Site Request Forgery (CSRF, XSRF) mitigation is done by cryptographically
-         * binding the value of this parameter with a browser cookie.
-         *
-         * Use the session ID for this purpose.
+        /* From the Open ID spec:
+          nonce
+          OPTIONAL. String value used to associate a Client session with an ID Token, and to mitigate
+          replay attacks. The value is passed through unmodified from the Authentication Request to
+          the ID Token. Sufficient entropy MUST be present in the nonce values used to prevent attackers
+          from guessing values. For implementation notes, see Section 15.5.2.
          */
-        String state = sessionId;
-
-        /** From the Open ID spec:
-         * nonce
-         * OPTIONAL. String value used to associate a Client session with an ID Token, and to mitigate
-         * replay attacks. The value is passed through unmodified from the Authentication Request to
-         * the ID Token. Sufficient entropy MUST be present in the nonce values used to prevent attackers
-         * from guessing values. For implementation notes, see Section 15.5.2.
-         */
-        String nonce = ServerUtils.generateNonce(state);
+        String nonce = ServerUtils.generateNonce(sessionId);
 
         // Generate url for request to Slack
         String url = ServerUtils.generateSlackAuthorizeURL(config.client_id,
-                state,
+                sessionId,
                 nonce,
                 config.redirect_uri);
 

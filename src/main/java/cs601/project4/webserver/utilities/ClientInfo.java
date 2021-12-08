@@ -7,12 +7,12 @@ package cs601.project4.webserver.utilities;
 public class ClientInfo {
 
     private String name;
-    private String email;
+    private final String email;
 
     /**
      * Constructor
-     * @param name
-     * @param email
+     * @param name name of user, initially from Slack
+     * @param email email of user from Slack
      */
     public ClientInfo(String name, String email) {
         this.name = name;

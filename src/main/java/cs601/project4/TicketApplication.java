@@ -58,7 +58,7 @@ public class TicketApplication {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setAttribute(ServerConstants.CONFIG_KEY, config);
 
-        //start server
+        //configure server
         int port = config.port;
         LOGGER.info("Starting server...");
         Server server = new Server(port);

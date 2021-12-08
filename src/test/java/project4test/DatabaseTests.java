@@ -16,7 +16,6 @@ public class DatabaseTests {
 
     @Test
     void testInsert(){
-
         //set up Config
         Gson gson = new Gson();
         Config config = new Config();

@@ -40,9 +40,9 @@ public class ProfileServlet extends HttpServlet {
 
         String path = req.getServletPath();
         //TODO::
-        if (path == "/profile/transfer") {
-            resp.getWriter().println("Ticket transfered");
-        } else if (path == "/profile/update"){
+        if (path.equals("/profile/transfer")) {
+            resp.getWriter().println("Ticket transferred");
+        } else if (path.equals("/profile/update")){
             resp.getWriter().println("Profile updated");
         } else {
             //profile
@@ -56,16 +56,11 @@ public class ProfileServlet extends HttpServlet {
                     </form></p>
                     """;
             resp.getWriter().println(name);
-            String email = "<p>Email: " + clientInfo.getName() + " "
-                    + """
-                    <form action="/profile/update">
-                      <label for="email">Update email:</label>
-                      <input type="text" id="email" name="email" maxlength="255" required="true">
-                      <input type="submit" value="Submit">
-                    </form></p>
-                    """;
+            String email = "<p>Email: " + clientInfo.getEmail();
             resp.getWriter().println(email);
             resp.getWriter().println("<h2>My tickets:</h2>");
+
+            resp.getWriter().println("<h2>My events:</h2>");
 
         }
         resp.getWriter().println("<p><a href=\"/home\">Return to home</a></p>");

@@ -1,6 +1,6 @@
 package cs601.project4.database;
 
-import cs601.project4.Config;
+import cs601.project4.webserver.utilities.ClientInfo;
 
 import java.sql.*;
 
@@ -13,14 +13,44 @@ import java.sql.*;
  */
 public class DatabaseManager {
 
+    /**
+     * return given user
+     * @param con connection to database
+     * @param clientInfo desired user
+     * @return user row
+     */
+    public static ResultSet executeSelectUser(Connection con, ClientInfo clientInfo) throws SQLException{
+        String sql = "SELECT * FROM users WHERE email = '" + clientInfo.getEmail() + "';";
+        System.out.println(sql);
+        PreparedStatement stmt = con.prepareStatement(sql);
+        return stmt.executeQuery();
+    }
+    /**
+     * add user to users
+     * @param con connection to database
+     * @param clientInfo information about client
+     * @throws SQLException sql insert failed
+     */
+    public static void executeInsertUser(Connection con, ClientInfo clientInfo) throws SQLException{
+        String sql = "INSERT INTO users (name, email) VALUES (?, ?);";
+        PreparedStatement insertContactStmt = con.prepareStatement(sql);
+        insertContactStmt.setString(1, clientInfo.getName());
+        insertContactStmt.setString(2, clientInfo.getEmail());
+
+        insertContactStmt.executeUpdate();
+    }
 
     /**
-     * A method to demonstrate using a PreparedStatement to execute a database insert.
-     * @param con
-     * @param name
-     * @param startdate
-     * //TODO
-     * @throws SQLException
+     * A method to execute a database insert of new event.
+     * @param con connection to server
+     * @param name name of event (255 characters
+     * @param startdate start time and date of event
+     * @param description text description of event (512 characters)
+     * @param creator email of event creator
+     * @param base_price price of ticket
+     * @param student_price optional discount price
+     * @param vip_price optional exclusive price
+     * @throws SQLException insert failed
      */
     public static void executeInsertEvent
         (Connection con,
@@ -57,14 +87,13 @@ public class DatabaseManager {
     }
 
     /**
-     * A method to demonstrate using a PrepareStatement to execute a database select
-     * @param con
-     * @throws SQLException
+     * return all events
+     * @param con connection to database
+     * @throws SQLException sql query failed
      */
-    public static ResultSet executeSelectEvent(Connection con) throws SQLException {
-        String selectAllContactsSql = "SELECT * FROM tickets;";
+    public static ResultSet executeSelectEvents(Connection con) throws SQLException {
+        String selectAllContactsSql = "SELECT name FROM users;";
         PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
         return selectAllContactsStmt.executeQuery();
     }
-
 }

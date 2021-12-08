@@ -1,5 +1,7 @@
 package cs601.project4.webserver;
 
+import cs601.project4.database.DBCPDataSource;
+import cs601.project4.database.DatabaseManager;
 import cs601.project4.webserver.utilities.ClientInfo;
 import cs601.project4.webserver.utilities.ServerConstants;
 import jakarta.servlet.ServletException;
@@ -9,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.http.HttpStatus;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -44,7 +48,7 @@ public class EventServlet extends HttpServlet {
 
         String path = req.getServletPath();
         //create new event
-        if (path == "/event/create") {
+        if (path.equals("/event/create")) {
             if(req.getParameter("name") != null){
 
                 //collect parameters
@@ -64,7 +68,7 @@ public class EventServlet extends HttpServlet {
                 if (!req.getParameter("vip_price").isEmpty()) {
                     student_price = Double.parseDouble(req.getParameter("vip_price"));
                 }
-/*
+
                 //add event to database
                 try (Connection connection = DBCPDataSource.getConnection()) {
                     DatabaseManager.executeInsertEvent(
@@ -79,7 +83,7 @@ public class EventServlet extends HttpServlet {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
- */
+
                 resp.getWriter().println("Event created.");
             } else {
                 //give form
@@ -87,25 +91,25 @@ public class EventServlet extends HttpServlet {
                         <form action="/event/create">
                           <label for="name">Event name:</label><br/>
                           <input type="text" id="name" name="name" maxlength="255" required="true">
-                          <br/>                          
+                          <br/>
                           <label for="description">Description:</label><br/>
                           <input type="text" id="description" name="description" maxlength="512" required="true">
-                          <br/>                         
+                          <br/>
                           <label for="datetime">Date and time:</label><br/>
                           <input type="datetime-local" id="datetime" name="datetime" min='2021-01-01T00:00' required="true">
-                          <br/> 
+                          <br/>
                           <label for="base_price">Base Price:</label><br/>
                           <input type="text" id="base_price" name="base_price"
                             pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99" required="true">
-                            <br/>                            
+                            <br/>
                           <label for="student_price">Student Price (optional):</label><br/>
                           <input type="text" id="student_price" name="student_price"
                             pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99">
-                            <br/>                            
+                            <br/>
                           <label for="vip_price">VIP Price (optional):</label><br/>
                           <input type="text" id="vip_price" name="vip_price"
                             pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99">
-                            <br/> 
+                            <br/>
                           <input type="submit" value="Submit">
                         </form>
                         """;

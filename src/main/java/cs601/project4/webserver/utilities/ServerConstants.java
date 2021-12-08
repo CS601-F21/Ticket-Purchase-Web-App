@@ -31,62 +31,20 @@ public class ServerConstants {
     public static final String NAME_KEY = "name";
     public static final String EMAIL_KEY = "email";
 
-    public static final String GET = "GET";
-    public static final String POST = "POST";
-    public static final String VERSION = "HTTP/1.1";
+    public static final String PAGE_HEADER = """
+            <!DOCTYPE html>
+            <html xmlns="http://www.w3.org/1999/xhtml">
+            <head>
+              <title>Log in with Slack</title>
+            </head>
+            <body>
+            <h1>Ticket-Get-It</h1>
+            """;
 
-    public static final String OK = "200 OK";
-    public static final String BAD_REQUEST = "400 Bad Request";
-    public static final String NOT_FOUND = "404 Not Found";
-    public static final String NOT_ALLOWED = "405 Method Not Allowed";
+    public static final String PAGE_FOOTER = """
 
-    public static final String CONTENT_LENGTH = "Content-Length:";
-    public static final String CONNECTION_CLOSE = "Connection: close";
-
-    public static final String PAGE_HEADER = "<!DOCTYPE html>\n" +
-            "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
-            "<head>\n" +
-            "  <title>Log in with Slack</title>\n" +
-            "</head>\n" +
-            "<body>\n" +
-            "<h1>Ticket-Get-It</h1>" +
-            "\n";
-
-    public static final String PAGE_FOOTER = "\n" +
-            "</body>\n" +
-            "</html>";
-
-
-    public static final String REVIEW_SEARCH_PAGE = """
-                    <!DOCTYPE html>
-                    <html xmlns="http://www.w3.org/1999/xhtml">
-                    <head>
-                       <title>Review Search</title>
-                    </head>
-                    <body>
-
-                       <form>
-                           <label for="query">Query:</label><br/>
-                           <input type="text" id="query" name="query"<br/>
-                       </form>
-
-                    </body>
-                    </html>""";
-    public static final String SLACKBOT_PAGE = """
-                    <!DOCTYPE html>
-                    <html xmlns="http://www.w3.org/1999/xhtml">
-                    <head>
-                       <title>Find</title>
-                    </head>
-                    <body>
-
-                       <form>
-                           <label for="message">message:</label><br/>
-                           <input type="text" id="message" name="message"<br/>
-                       </form>
-
-                    </body>
-                    </html>""";
+            </body>
+            </html>""";
 
     public static final String SHUTDOWN_PAGE = """
                     <!DOCTYPE html>

@@ -14,10 +14,9 @@ import java.util.Map;
 public class HTTPFetcher {
 
     /**
-     * Execute an HTTP GET for the specified URL and return the
-     * body of the response as a String.
-     * @param url
-     * @return
+     * Execute an HTTP GET for the specified URL
+     * @param url specified URL
+     * @return body of the response as a string
      */
     public static String doGet(String url) {
         return doGet(url, null);
@@ -27,9 +26,9 @@ public class HTTPFetcher {
      * Execute an HTTP GET for the specified URL and return
      * the body of the response as a String. Allows request
      * headers to be set.
-     * @param url
-     * @param headers
-     * @return
+     * @param url URL that GET is executed on
+     * @param headers headers of request
+     * @return body of the response as a string
      */
     public static String doGet(String url, Map<String, String> headers) {
         try {
@@ -52,10 +51,10 @@ public class HTTPFetcher {
      * Headers for the request are provided in the map headers.
      * The body of the request is provided as a String.
      *
-     * @param url
-     * @param headers
-     * @param body
-     * @return
+     * @param url URL that POST is executed on
+     * @param headers headers of request
+     * @param body body of the request
+     * @return response body
      */
     public static String doPost(String url, Map<String, String> headers, String body) {
 
@@ -79,9 +78,9 @@ public class HTTPFetcher {
 
     /**
      * Helper method to set the headers of any HttpRequest.Builder.
-     * @param builder
-     * @param headers
-     * @return
+     * @param builder HttpRequest.Builder
+     * @param headers headers of Builder
+     * @return return the Builder
      */
     private static HttpRequest.Builder setHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
         if(headers != null) {

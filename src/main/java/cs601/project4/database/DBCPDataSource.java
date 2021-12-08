@@ -15,19 +15,18 @@ import java.sql.SQLException;
 public class DBCPDataSource {
 
     // Apache commons connection pool implementation
-    private static BasicDataSource ds = new BasicDataSource();
+    private static final BasicDataSource ds = new BasicDataSource();
 
     /**
-     * TODO
+     * Sets up database
      */
     public static void initialize(Config config){
-        ds.setUrl("jdbc:mysql://localhost:3306/" + config.database);
+        ds.setUrl("jdbc:mysql://localhost:3307/" + config.database);
         ds.setUsername(config.username);
         ds.setPassword(config.password);
         ds.setMinIdle(5);
         ds.setMaxIdle(10);
     }
-
 
     /**
      * Return a Connection from the pool.
