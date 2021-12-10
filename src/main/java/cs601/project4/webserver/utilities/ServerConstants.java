@@ -22,7 +22,6 @@ public class ServerConstants {
     public static final String REDIRECT_URI_KEY = "redirect_uri";
     public static final String OK_KEY = "ok";
 
-
     public static final String CONFIG_KEY = "config_key";
     public static final String CLIENT_INFO_KEY = "client_info_key";
     public static final String BUTTON_URL = "https://platform.slack-edge.com/img/sign_in_with_slack@2x.png";
@@ -32,69 +31,46 @@ public class ServerConstants {
     public static final String EMAIL_KEY = "email";
 
     public static final String PAGE_HEADER = """
-            <!DOCTYPE html>
-            <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
-              <title>Log in with Slack</title>
-            </head>
-            <body>
-            <h1>Ticket-Get-It</h1>
-            """;
+        <!DOCTYPE html>
+        <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <title>Log in with Slack</title>
+        </head>
+        <body>
+        <h1>Ticket-Get-It</h1>
+        """;
 
     public static final String PAGE_FOOTER = """
 
-            </body>
-            </html>""";
+        </body>
+        </html>""";
 
-    public static final String SHUTDOWN_PAGE = """
-                    <!DOCTYPE html>
-                    <html xmlns="http://www.w3.org/1999/xhtml">
-                    <head>
-                       <title>Shutdown</title>
-                    </head>
-                    <body>
+    public static final String EVENT_FORM = """
+        <form action="/event/create">
+          <label for="name">Event name:</label><br/>
+          <input type="text" id="name" name="name" maxlength="255" required="true">
+          <br/>
+          <label for="description">Description:</label><br/>
+          <textarea rows = "5" cols = "60" name = "description" maxlength="512" required="true">
+          </textarea>
+          <br/>
+          <label for="datetime">Date and time:</label><br/>
+          <input type="datetime-local" id="datetime" name="datetime" min='2021-01-01T00:00' required="true">
+          <br/>
+          <label for="base_price">Base Price:</label><br/>
+          <input type="text" id="base_price" name="base_price"
+            pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99" required="true">
+            <br/>
+          <label for="student_price">Student Price (optional):</label><br/>
+          <input type="text" id="student_price" name="student_price"
+            pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99">
+            <br/>
+          <label for="vip_price">VIP Price (optional):</label><br/>
+          <input type="text" id="vip_price" name="vip_price"
+            pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99">
+            <br/>
+          <input type="submit" value="Submit">
+        </form>
+        """;
 
-                        <p>Shutting down server.</p>
-
-                    </body>
-                    </html>""";
-
-    public static final String BAD_REQUEST_PAGE = """
-            <!DOCTYPE html>
-            <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
-              <title>400 Bad Request</title>
-            </head>
-            <body>
-
-              <p>Incorrect HTTP Request.</p>
-
-            </body>
-            </html>""";
-
-    public static final String NOT_FOUND_PAGE = """
-            <!DOCTYPE html>
-            <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
-              <title>404 Resource not found</title>
-            </head>
-            <body>
-
-              <p>The resource you are looking for was not found.</p>
-
-            </body>
-            </html>""";
-
-    public static final String NOT_ALLOWED_PAGE = """
-            <!DOCTYPE html>
-            <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
-              <title>405 Method not allowed</title>
-            </head>
-            <body>
-
-              <p>The method you requested is not allowed.</p>
-
-            </body>
-            </html>""";
 }

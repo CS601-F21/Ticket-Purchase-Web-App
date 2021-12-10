@@ -21,7 +21,6 @@ public class DatabaseManager {
      */
     public static ResultSet executeSelectUser(Connection con, ClientInfo clientInfo) throws SQLException{
         String sql = "SELECT * FROM users WHERE email = '" + clientInfo.getEmail() + "';";
-        System.out.println(sql);
         PreparedStatement stmt = con.prepareStatement(sql);
         return stmt.executeQuery();
     }
@@ -87,13 +86,47 @@ public class DatabaseManager {
     }
 
     /**
+     * return all details about specified event
+     * @param con connection to database
+     * @param id identifier of event
+     * @throws SQLException sql query failed
+     */
+    public static ResultSet executeSelectEvent(Connection con, int id) throws SQLException {
+        String selectAllContactsSql = "SELECT * FROM events WHERE id = '" + id + "';";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
+        return selectAllContactsStmt.executeQuery();
+    }
+    /**
      * return all events
      * @param con connection to database
      * @throws SQLException sql query failed
      */
-    public static ResultSet executeSelectEvents(Connection con) throws SQLException {
-        String selectAllContactsSql = "SELECT name FROM users;";
+    public static ResultSet executeSelectAllEvents(Connection con) throws SQLException {
+        String selectAllContactsSql = "SELECT name,id FROM events;";
         PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
         return selectAllContactsStmt.executeQuery();
+    }
+    /**
+     * return all events created by user
+     * @param con connection to database
+     * @param email user's email
+     * @throws SQLException sql query failed
+     */
+    public static ResultSet executeSelectUsersEvents(Connection con, String email) throws SQLException {
+        String selectAllContactsSql = "SELECT name,id FROM events WHERE creator = '" + email + "';";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
+        return selectAllContactsStmt.executeQuery();
+    }
+
+    /**
+     * deletes specified event from table
+     * @param con connection to database
+     * @param id id of event
+     * @throws SQLException sql query failed
+     */
+    public static void executeDeleteEvent(Connection con, int id) throws SQLException{
+        String sql = "DELETE FROM events WHERE id = " + id + ";";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(sql);
+        selectAllContactsStmt.executeUpdate();
     }
 }

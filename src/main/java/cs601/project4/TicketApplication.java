@@ -76,6 +76,8 @@ public class TicketApplication {
         //events
         context.addServlet(EventServlet.class, "/event");
         context.addServlet(EventServlet.class, "/event/create");
+        context.addServlet(EventServlet.class, "/event/details");
+        context.addServlet(EventServlet.class, "/event/delete");
         // handle logout
         context.addServlet(LogoutServlet.class, "/logout");
 

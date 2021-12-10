@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet {
             req.getSession().setAttribute(ServerConstants.CLIENT_INFO_KEY, clientInfo);
 
 
-            resp.getWriter().println("<p><a href=\"/home\">Continue to home page</a></p>");
+            resp.getWriter().println("<p><a href=\"/home\">Continue to Home page</a></p>");
         }
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }
