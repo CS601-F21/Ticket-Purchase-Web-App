@@ -48,16 +48,20 @@ public class ProfileServlet extends HttpServlet {
         if (path.equals("/profile/transfer")) {
             resp.getWriter().println("<p>Ticket transferred.</p>");
         } else if (path.equals("/profile/update")){
+            //todo switch no break
             resp.getWriter().println("<p>Profile updated.</p>");
+            /* FALLTHROUGH */
         } else {
             //profile
             //TODO:
-            String nameLine = "<p>Name: " + clientInfo.getName() + " "
-                    + """
-                    <form action="/profile/update">
-                      <label for="name">Update name:</label>
-                      <input type="text" id="name" name="name" maxlength="255" required="true">
-                      <input type="submit" value="Submit">
+            String nameLine = """
+                    <form action='/profile/update'>
+                      <label for='name'>
+                      <p>Name: """ +
+                    clientInfo.getName() + """
+                      </label>
+                      <input type='text' id='name' name='name' maxlength='255' required='true'>
+                      <input type='submit' value='Update name'>
                     </form></p>
                     """;
             resp.getWriter().println(nameLine);
@@ -82,7 +86,7 @@ public class ProfileServlet extends HttpServlet {
                 throwables.printStackTrace();
             }
         }
-        resp.getWriter().println("<p><a href=\"/home\">Return to Home Page</a></p>");
+        resp.getWriter().println("<p><a href='/home'>Return to Home Page</a></p>");
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }
 }

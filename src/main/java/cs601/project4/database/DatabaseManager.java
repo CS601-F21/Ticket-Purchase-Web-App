@@ -129,4 +129,45 @@ public class DatabaseManager {
         PreparedStatement selectAllContactsStmt = con.prepareStatement(sql);
         selectAllContactsStmt.executeUpdate();
     }
+
+    public static void executeUpdateEvent(Connection con,
+            int id,
+            String name,
+            Timestamp startdate,
+            String description,
+            Double base_price,
+            Double student_price,
+            Double vip_price)
+            throws SQLException {
+
+        //TODO: debug date
+        //reset optional parameters
+        String resetSql = "UPDATE events SET vip_price=NULL, student_price=NULL WHERE id=?;";
+        PreparedStatement resetStmt = con.prepareStatement(resetSql);
+        resetStmt.setInt(1,id);
+        resetStmt.executeUpdate();
+
+        //update columns
+        String updateSql =
+                "UPDATE events SET name=?, startdate=?, description=?, base_price=?, student_price=?, vip_price=? " +
+                        "WHERE id=?;";
+        PreparedStatement updateStmt = con.prepareStatement(updateSql);
+        updateStmt.setString(1, name);
+        updateStmt.setTimestamp(2, startdate);
+        updateStmt.setString(3, description);
+        updateStmt.setDouble(4, base_price);
+        if (student_price != null){
+            updateStmt.setDouble(5, student_price);
+        } else {
+            updateStmt.setNull(5, Types.DOUBLE);
+        }
+        if (vip_price != null){
+            updateStmt.setDouble(6, vip_price);
+        } else {
+            updateStmt.setNull(6, Types.DOUBLE);
+        }
+        updateStmt.setInt(7, id);
+
+        updateStmt.executeUpdate();
+    }
 }

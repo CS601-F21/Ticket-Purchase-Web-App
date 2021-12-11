@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.StringReader;
+import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.Map;
 
@@ -13,6 +14,9 @@ import java.util.Map;
  * @author Wyatt Mumford
  */
 public class ServerUtils {
+
+    //source: https://mkyong.com/java/how-to-round-double-float-value-to-2-decimal-points-in-java/#decimalformat000-vs-decimalformat
+    public static final DecimalFormat df = new DecimalFormat("0.00");
 
     // for parsing JSON
     private static final Gson gson = new Gson();
