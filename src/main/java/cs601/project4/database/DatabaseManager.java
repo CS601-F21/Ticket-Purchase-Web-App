@@ -130,6 +130,18 @@ public class DatabaseManager {
         selectAllContactsStmt.executeUpdate();
     }
 
+    /**
+     * Update event with new data
+     * @param con connection to database
+     * @param id id of event
+     * @param name name of event
+     * @param startdate start date of event
+     * @param description description of event
+     * @param base_price base price of ticket
+     * @param student_price optional discounted price
+     * @param vip_price optional premium price
+     * @throws SQLException error in update
+     */
     public static void executeUpdateEvent(Connection con,
             int id,
             String name,
@@ -140,7 +152,6 @@ public class DatabaseManager {
             Double vip_price)
             throws SQLException {
 
-        //TODO: debug date
         //reset optional parameters
         String resetSql = "UPDATE events SET vip_price=NULL, student_price=NULL WHERE id=?;";
         PreparedStatement resetStmt = con.prepareStatement(resetSql);
@@ -170,4 +181,25 @@ public class DatabaseManager {
 
         updateStmt.executeUpdate();
     }
+
+    /**
+     * updates a user's name for given email
+     * @param con connection to database
+     * @param name new name
+     * @param email email linked to slack
+     * @throws SQLException error in insertion
+     */
+    public static void executeUpdateUser(Connection con, String name, String email)
+            throws SQLException {
+
+        //update columns
+        String updateSql =
+                "UPDATE users SET name=? WHERE email=?;";
+        PreparedStatement updateStmt = con.prepareStatement(updateSql);
+        updateStmt.setString(1, name);
+        updateStmt.setString(2, email);
+
+        updateStmt.executeUpdate();
+    }
+
 }

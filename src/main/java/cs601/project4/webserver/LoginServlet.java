@@ -77,6 +77,7 @@ public class LoginServlet extends HttpServlet {
                     DatabaseManager.executeInsertUser(connection, clientInfo);
 
                 } else {
+                    clientInfo.setName(result.getString(1));
                     resp.getWriter().println("<p>Welcome back, " + clientInfo.getName() + ".</p>");
                     resp.getWriter().println("<p>You have been successfully logged in.</p>");
                 }

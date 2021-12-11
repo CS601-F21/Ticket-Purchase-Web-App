@@ -44,47 +44,58 @@ public class ProfileServlet extends HttpServlet {
 
 
         String path = req.getServletPath();
-        //TODO::
-        if (path.equals(ServerConstants.PROFILE_TRANSFER_PATH)) {
-            resp.getWriter().println("<p>Ticket transferred.</p>");
-        } else if (path.equals(ServerConstants.PROFILE_UPDATE_PATH)){
-            //todo switch no break
-            resp.getWriter().println("<p>Profile updated.</p>");
-            /* FALLTHROUGH */
-        } else {
-            //profile
-            //TODO:
-            String nameLine = """
-                    <form action='/profile/update'>
-                      <label for='name'>
-                      <p>Name: """ +
-                    clientInfo.getName() + """
-                      </label>
-                      <input type='text' id='name' name='name' maxlength='255' required='true'>
-                      <input type='submit' value='Update name'>
-                    </form></p>
-                    """;
-            resp.getWriter().println(nameLine);
-            String emailLine = "<p>Email: " + clientInfo.getEmail() + "</p>";
-            resp.getWriter().println(emailLine);
-            //display tickets owned by user
-            resp.getWriter().println("<h2>My tickets:</h2>");
 
-            //display events created by user
-            resp.getWriter().println("<h2>My events:</h2>");
-            try (Connection connection = DBCPDataSource.getConnection()) {
-                ResultSet result = DatabaseManager.executeSelectUsersEvents(connection, clientInfo.getEmail());
-                resp.getWriter().print("<p>");
-                while (result.next()){
-                    String eventName = result.getString(1);
-                    int id = result.getInt(2);
-                    String eventListing = "<a href='/event/details?id=" + id + "'>" + eventName + "</a><br/>";
-                    resp.getWriter().print(eventListing);
+        switch (path) {
+            case ServerConstants.PROFILE_TRANSFER_PATH:
+                resp.getWriter().println("<p>Ticket transferred.</p>");
+                break;
+            case ServerConstants.PROFILE_UPDATE_PATH:
+                if (req.getParameter("name") == null || req.getParameter("name").isEmpty()){
+                    resp.getWriter().println("<p>Update not successful.</p>");
+                    break;
+                } else {
+                    String name = req.getParameter("name");
+                    clientInfo.setName(name);
+                    try (Connection connection = DBCPDataSource.getConnection()) {
+                        DatabaseManager.executeUpdateUser(connection, name, clientInfo.getEmail());
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    /* FALLTHROUGH */
                 }
-                resp.getWriter().println("</p>");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            default:
+                //profile
+                String nameLine = """
+                        <form action='/profile/update'>
+                          <label for='name'>
+                          <p>Name: """ +
+                        clientInfo.getName() + """
+                          </label>
+                          <input type='text' id='name' name='name' maxlength='255' required='true'>
+                          <input type='submit' value='Update name'>
+                        </form></p>
+                        """;
+                resp.getWriter().println(nameLine);
+                String emailLine = "<p>Email: " + clientInfo.getEmail() + "</p>";
+                resp.getWriter().println(emailLine);
+                //display tickets owned by user
+                resp.getWriter().println("<h2>My tickets:</h2>");
+
+                //display events created by user
+                resp.getWriter().println("<h2>My events:</h2>");
+                try (Connection connection = DBCPDataSource.getConnection()) {
+                    ResultSet result = DatabaseManager.executeSelectUsersEvents(connection, clientInfo.getEmail());
+                    resp.getWriter().print("<p>");
+                    while (result.next()){
+                        String eventName = result.getString(1);
+                        int id = result.getInt(2);
+                        String eventListing = "<a href='/event/details?id=" + id + "'>" + eventName + "</a><br/>";
+                        resp.getWriter().print(eventListing);
+                    }
+                    resp.getWriter().println("</p>");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
         }
         resp.getWriter().println(ServerConstants.HOME_PAGE_LINK);
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);

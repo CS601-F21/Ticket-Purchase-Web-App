@@ -34,4 +34,11 @@ public class ClientInfo {
         return email;
     }
 
+    /**
+     * set user's name
+     */
+    public void setName(String name){
+        this.name = name;
+    }
+
 }

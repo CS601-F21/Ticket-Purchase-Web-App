@@ -74,7 +74,7 @@ public class EventServlet extends HttpServlet {
                 resp.getWriter().println("<p><a href='/event/create'>Create new event</a></p>");
 
                 break;
-            case ServerConstants.EVENT_PATH:
+            case ServerConstants.EVENT_CREATE_PATH:
                 if (verifyFormParameters(req)) {
                     //create new event
                     createEvent(req, clientInfo);
