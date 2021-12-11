@@ -31,7 +31,7 @@ public class LandingServlet extends HttpServlet {
             resp.setStatus(HttpStatus.OK_200);
             resp.getWriter().println(ServerConstants.PAGE_HEADER);
             resp.getWriter().println("<p>You have already been authenticated.</p>");
-            resp.getWriter().println("<p><a href=\"/home\">Return to home</a></p>");
+            resp.getWriter().println(ServerConstants.HOME_PAGE_LINK);
             resp.getWriter().println(ServerConstants.PAGE_FOOTER);
             return;
         }

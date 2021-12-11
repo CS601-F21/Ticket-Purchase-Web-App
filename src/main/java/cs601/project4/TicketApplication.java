@@ -66,21 +66,21 @@ public class TicketApplication {
         // the default path will direct to a landing page with "Login with Slack" button
         context.addServlet(LandingServlet.class, "/");
         // Once authenticated, Slack will redirect the user back to /login
-        context.addServlet(LoginServlet.class, "/login");
+        context.addServlet(LoginServlet.class, ServerConstants.LOGIN_PATH);
         // homepage
-        context.addServlet(HomeServlet.class, "/home");
+        context.addServlet(HomeServlet.class, ServerConstants.HOME_PATH);
         //profile
-        context.addServlet(ProfileServlet.class, "/profile");
-        context.addServlet(ProfileServlet.class, "/profile/update");
-        context.addServlet(ProfileServlet.class, "/profile/transfer");
+        context.addServlet(ProfileServlet.class, ServerConstants.PROFILE_PATH);
+        context.addServlet(ProfileServlet.class, ServerConstants.PROFILE_UPDATE_PATH);
+        context.addServlet(ProfileServlet.class, ServerConstants.PROFILE_TRANSFER_PATH);
         //events
-        context.addServlet(EventServlet.class, "/event");
-        context.addServlet(EventServlet.class, "/event/create");
-        context.addServlet(EventServlet.class, "/event/details");
-        context.addServlet(EventServlet.class, "/event/delete");
-        context.addServlet(EventServlet.class, "/event/modify");
+        context.addServlet(EventServlet.class, ServerConstants.EVENT_PATH);
+        context.addServlet(EventServlet.class, ServerConstants.EVENT_CREATE_PATH);
+        context.addServlet(EventServlet.class, ServerConstants.EVENT_DETAILS_PATH);
+        context.addServlet(EventServlet.class, ServerConstants.EVENT_DELETE_PATH);
+        context.addServlet(EventServlet.class, ServerConstants.EVENT_MODIFY_PATH);
         // handle logout
-        context.addServlet(LogoutServlet.class, "/logout");
+        context.addServlet(LogoutServlet.class, ServerConstants.LOGOUT_PATH);
 
         //TODO:shutdown
 

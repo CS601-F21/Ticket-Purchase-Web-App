@@ -74,8 +74,8 @@ public class EventServlet extends HttpServlet {
                 resp.getWriter().println("<p><a href='/event/create'>Create new event</a></p>");
 
                 break;
-            case "/event/create":
-                if (verifyEventForm(req)) {
+            case ServerConstants.EVENT_PATH:
+                if (verifyFormParameters(req)) {
                     //create new event
                     createEvent(req, clientInfo);
                     resp.getWriter().println("Event created.");
@@ -85,7 +85,7 @@ public class EventServlet extends HttpServlet {
                     resp.getWriter().println(ServerConstants.EVENT_FORM);
                 }
                 break;
-            case "/event/modify":
+            case ServerConstants.EVENT_MODIFY_PATH:
                 //id not given
                 if(req.getParameter("id") == null){
                     resp.getWriter().println("<p>Event not found.</p>");
@@ -93,7 +93,7 @@ public class EventServlet extends HttpServlet {
                     break;
                 }
                 //verify parameters
-                if (!verifyEventForm(req)){
+                if (!verifyFormParameters(req)){
                     //query event
                     try (Connection connection = DBCPDataSource.getConnection()) {
                         int eventId = Integer.parseInt(req.getParameter("id"));
@@ -117,7 +117,7 @@ public class EventServlet extends HttpServlet {
                     modifyEvent(req);
                     /* FALLTHROUGH*/
                 }
-            case "/event/details":
+            case ServerConstants.EVENT_DETAILS_PATH:
                 //id not given
                 if(req.getParameter("id") == null){
                     resp.getWriter().println("<p>Event not found.</p>");
@@ -133,14 +133,14 @@ public class EventServlet extends HttpServlet {
                         resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
                     } else {
                         //print details of event
-                        eventDetails(resp, clientInfo, result);
+                        showEventDetails(resp, clientInfo, result);
                     }
                     resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
                 break;
-            case "/event/delete":
+            case ServerConstants.EVENT_DELETE_PATH:
                 //id not given
                 if(req.getParameter("id") == null){
                     resp.getWriter().println("<p>Event not found.</p>");
@@ -169,7 +169,7 @@ public class EventServlet extends HttpServlet {
                 }
                 break;
         }
-        resp.getWriter().println("<p><a href='/home'>Return to Home page</a></p>");
+        resp.getWriter().println(ServerConstants.HOME_PAGE_LINK);
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }
 
@@ -262,7 +262,7 @@ public class EventServlet extends HttpServlet {
      * @throws SQLException
      * @throws IOException
      */
-    private void eventDetails(HttpServletResponse resp, ClientInfo clientInfo, ResultSet result)
+    private void showEventDetails(HttpServletResponse resp, ClientInfo clientInfo, ResultSet result)
             throws SQLException, IOException {
 
         int eventId = result.getInt(2);
@@ -302,10 +302,10 @@ public class EventServlet extends HttpServlet {
         //TODO purchase
         resp.getWriter().println("Price: $" + ServerUtils.df.format(price) + "<br/>");
         if (studentPrice != null){
-            resp.getWriter().println("Student price: $" + ServerUtils.df.format(studentPrice) + "<br/>");
+            resp.getWriter().println("Student Price: $" + ServerUtils.df.format(studentPrice) + "<br/>");
         }
         if (vipPrice != null){
-            resp.getWriter().println("Vip price: $" + ServerUtils.df.format(vipPrice) + "<br/>");
+            resp.getWriter().println("VIP Price: $" + ServerUtils.df.format(vipPrice) + "<br/>");
         }
         resp.getWriter().println("</p>");
         //delete or modify event
@@ -320,7 +320,7 @@ public class EventServlet extends HttpServlet {
      * @param req http request containing parameters
      * @return true if valid, or false
      */
-    private boolean verifyEventForm(HttpServletRequest req){
+    private boolean verifyFormParameters(HttpServletRequest req){
         Map parameterMap = req.getParameterMap();
         Set parameters = parameterMap.keySet();
         if (!parameters.contains("name") ||

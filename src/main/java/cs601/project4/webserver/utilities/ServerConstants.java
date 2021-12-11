@@ -2,8 +2,7 @@ package cs601.project4.webserver.utilities;
 
 /**
  * A helper class to store various constants used for the HTTP server.
- * sources: https://github.com/CS601-F21/code-examples/blob/main/Web/src/main/java/examples/web/server/HttpConstants.java
- * https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/example/login/LoginServerConstants.java
+ * source: https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/example/login/LoginServerConstants.java
  */
 public class ServerConstants {
 
@@ -30,6 +29,20 @@ public class ServerConstants {
     public static final String NAME_KEY = "name";
     public static final String EMAIL_KEY = "email";
 
+    public static final String LOGIN_PATH = "/login";
+    public static final String HOME_PATH = "/home";
+    public static final String PROFILE_PATH = "/profile";
+    public static final String PROFILE_UPDATE_PATH = PROFILE_PATH + "/update";
+    public static final String PROFILE_TRANSFER_PATH = PROFILE_PATH + "/transfer";
+    public static final String EVENT_PATH = "/event";
+    public static final String EVENT_CREATE_PATH = EVENT_PATH + "/create";
+    public static final String EVENT_DETAILS_PATH = EVENT_PATH +"/details";
+    public static final String EVENT_DELETE_PATH = EVENT_PATH + "/delete";
+    public static final String EVENT_MODIFY_PATH = EVENT_PATH + "/modify";
+    public static final String LOGOUT_PATH = "/logout";
+
+
+    public static final String HOME_PAGE_LINK = "<p><a href='/home'>Return to Home Page</a></p>";
     public static final String PAGE_HEADER = """
         <!DOCTYPE html>
         <html xmlns="http://www.w3.org/1999/xhtml">

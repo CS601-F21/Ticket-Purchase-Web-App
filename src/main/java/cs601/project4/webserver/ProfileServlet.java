@@ -45,9 +45,9 @@ public class ProfileServlet extends HttpServlet {
 
         String path = req.getServletPath();
         //TODO::
-        if (path.equals("/profile/transfer")) {
+        if (path.equals(ServerConstants.PROFILE_TRANSFER_PATH)) {
             resp.getWriter().println("<p>Ticket transferred.</p>");
-        } else if (path.equals("/profile/update")){
+        } else if (path.equals(ServerConstants.PROFILE_UPDATE_PATH)){
             //todo switch no break
             resp.getWriter().println("<p>Profile updated.</p>");
             /* FALLTHROUGH */
@@ -86,7 +86,7 @@ public class ProfileServlet extends HttpServlet {
                 throwables.printStackTrace();
             }
         }
-        resp.getWriter().println("<p><a href='/home'>Return to Home Page</a></p>");
+        resp.getWriter().println(ServerConstants.HOME_PAGE_LINK);
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }
 }
