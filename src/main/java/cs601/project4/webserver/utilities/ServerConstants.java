@@ -25,7 +25,6 @@ public class ServerConstants {
     public static final String CLIENT_INFO_KEY = "client_info_key";
     public static final String BUTTON_URL = "https://platform.slack-edge.com/img/sign_in_with_slack@2x.png";
 
-    public static final String IS_AUTHED_KEY = "is_authed";
     public static final String NAME_KEY = "name";
     public static final String EMAIL_KEY = "email";
 

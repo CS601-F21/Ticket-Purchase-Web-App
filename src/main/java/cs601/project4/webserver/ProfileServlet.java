@@ -52,7 +52,6 @@ public class ProfileServlet extends HttpServlet {
             case ServerConstants.PROFILE_PURCHASE_PATH:
                 if (!ServerUtils.verifyParameter(req, "id") || !ServerUtils.verifyParameter(req, "type")) {
                     resp.getWriter().println("<p>Purchase unsuccessful.</p>");
-                    break;
                 } else {
                     int type = Integer.parseInt(req.getParameter("type"));
                     int eventId = Integer.parseInt(req.getParameter("id"));
@@ -66,9 +65,9 @@ public class ProfileServlet extends HttpServlet {
                     resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_DETAILS_PATH + "?id=" + eventId
                             + "'>Return to Event</a></p>");
                     resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>View Profile</a></p>");
-                    break;
                 }
-                //transfer ticket to new user
+                break;
+            //transfer ticket to new user
             case ServerConstants.PROFILE_TRANSFER_PATH:
                 //validate parameters
                 if(!ServerUtils.verifyParameter(req, "id")){
@@ -82,7 +81,7 @@ public class ProfileServlet extends HttpServlet {
                     try (Connection connection = DBCPDataSource.getConnection()) {
                         if (!ServerUtils.verifyTicketOwner(connection, clientInfo.getEmail(), id)) {
                             resp.getWriter().println("<p>Ticket does not belong to you.</p>");
-
+                            break;
                         }
                     }catch (SQLException throwables) {
                         throwables.printStackTrace();

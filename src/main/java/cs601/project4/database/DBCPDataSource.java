@@ -30,8 +30,8 @@ public class DBCPDataSource {
 
     /**
      * Return a Connection from the pool.
-     * @return
-     * @throws SQLException
+     * @return database connection
+     * @throws SQLException sql error
      */
     public static Connection getConnection() throws SQLException {
         return ds.getConnection();

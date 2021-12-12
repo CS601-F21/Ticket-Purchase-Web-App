@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /*TODO:
-    transfer ticket
     paginate events
     branding
  */
@@ -58,8 +57,6 @@ public class TicketApplication {
         LOGGER.info("Setting up database connection...");
         DBCPDataSource.initialize(config);
 
-        //TODO:
-
         // make the config information available across servlets by setting an attribute in the context
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setAttribute(ServerConstants.CONFIG_KEY, config);
@@ -88,8 +85,6 @@ public class TicketApplication {
         context.addServlet(EventServlet.class, ServerConstants.EVENT_MODIFY_PATH);
         // handle logout
         context.addServlet(LogoutServlet.class, ServerConstants.LOGOUT_PATH);
-
-        //TODO:shutdown
 
         server.setHandler(context);
         server.start();

@@ -17,8 +17,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Implements logic for Event page.
@@ -103,13 +101,12 @@ public class EventServlet extends HttpServlet {
                         if (!result.next()) {
                             resp.getWriter().println("<p>Event does not exist.</p>");
                             resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
-                            break;
                         } else {
                             //display edit form to user
                             String form = getModifyForm(result);
                             resp.getWriter().println(form);
-                            break;
                         }
+                        break;
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -176,7 +173,7 @@ public class EventServlet extends HttpServlet {
 
     /**
      * add new event to database
-     * @param req server request containing information about evnt
+     * @param req server request containing information about event
      * @param clientInfo info on user
      */
     private void createEvent(HttpServletRequest req, ClientInfo clientInfo) {
@@ -215,7 +212,7 @@ public class EventServlet extends HttpServlet {
 
     /**
      * modify event in database
-     * @param req http request containing information about evnt
+     * @param req http request containing information about event
      */
     private void modifyEvent(HttpServletRequest req) {
         //get parameters from request
@@ -260,8 +257,8 @@ public class EventServlet extends HttpServlet {
      * @param resp http server response that info is sent to
      * @param clientInfo info on user
      * @param result sql result of single event
-     * @throws SQLException
-     * @throws IOException
+     * @throws SQLException sql select error
+     * @throws IOException server response error
      */
     private void showEventDetails(HttpServletResponse resp, ClientInfo clientInfo, ResultSet result)
             throws SQLException, IOException {
@@ -274,7 +271,7 @@ public class EventServlet extends HttpServlet {
         String date = datetime.toString().split(" ")[0];
         String time = datetime.toString().split(" ")[1];
         int hours = Integer.parseInt(time.substring(0,2));
-        String ampm = null;
+        String ampm;
         if (hours == 0) {
             ampm = "PM";
         } else if (hours > 12){
@@ -331,14 +328,10 @@ public class EventServlet extends HttpServlet {
      * @return true if valid, or false
      */
     private boolean verifyFormParameters(HttpServletRequest req){
-        if (!ServerUtils.verifyParameter(req, "name") ||
-                !ServerUtils.verifyParameter(req,"datetime") ||
-                !ServerUtils.verifyParameter(req,"description") ||
-                !ServerUtils.verifyParameter(req,"base_price")){
-            return false;
-        } else {
-            return true;
-        }
+        return ServerUtils.verifyParameter(req, "name") &&
+                ServerUtils.verifyParameter(req, "datetime") &&
+                ServerUtils.verifyParameter(req, "description") &&
+                ServerUtils.verifyParameter(req, "base_price");
     }
 
     /**
@@ -352,9 +345,9 @@ public class EventServlet extends HttpServlet {
         String name = null;
         String description = null;
         String datetime = null;
-        Double price = null;
-        Double studentPrice = null;
-        Double vipPrice = null;
+        Double price;
+        Double studentPrice;
+        Double vipPrice;
         String priceFormatted = null;
         String studentPriceFormatted = null;
         String vipPriceFormatted = null;
@@ -381,7 +374,7 @@ public class EventServlet extends HttpServlet {
         }
 
         //create html form
-        String form = "<form action='/event/modify?id=" + eventId + "'>" +
+        return "<form action='/event/modify?id=" + eventId + "'>" +
                 "<label for='name'>Event name:</label><br/>" +
                 "<input type='text' id='name' name='name' maxlength='255' required='true' value='" + name  + "'>" +
                 "<br/>" +
@@ -412,7 +405,6 @@ public class EventServlet extends HttpServlet {
                 "<input type='hidden' id='id' name='id' value='" + eventId + "'>" +
                 "<input type='submit' value='Submit'>" +
                 "</form>";
-        return form;
     }
 
 

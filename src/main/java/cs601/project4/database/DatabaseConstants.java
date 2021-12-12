@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  * Holds constants related to database
- * @Author Wyatt Mumford
+ * @author Wyatt Mumford
  */
 public class DatabaseConstants {
     public static int NORMAL_TICKET = 0;
