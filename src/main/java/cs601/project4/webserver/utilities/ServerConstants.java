@@ -34,6 +34,7 @@ public class ServerConstants {
     public static final String PROFILE_PATH = "/profile";
     public static final String PROFILE_UPDATE_PATH = PROFILE_PATH + "/update";
     public static final String PROFILE_TRANSFER_PATH = PROFILE_PATH + "/transfer";
+    public static final String PROFILE_PURCHASE_PATH = PROFILE_PATH + "/purchase";
     public static final String EVENT_PATH = "/event";
     public static final String EVENT_CREATE_PATH = EVENT_PATH + "/create";
     public static final String EVENT_DETAILS_PATH = EVENT_PATH +"/details";

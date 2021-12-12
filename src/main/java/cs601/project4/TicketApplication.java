@@ -15,8 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /*TODO:
-    view ticket information
-    purchase ticket
     transfer ticket
     paginate events
     branding
@@ -81,6 +79,7 @@ public class TicketApplication {
         context.addServlet(ProfileServlet.class, ServerConstants.PROFILE_PATH);
         context.addServlet(ProfileServlet.class, ServerConstants.PROFILE_UPDATE_PATH);
         context.addServlet(ProfileServlet.class, ServerConstants.PROFILE_TRANSFER_PATH);
+        context.addServlet(ProfileServlet.class, ServerConstants.PROFILE_PURCHASE_PATH);
         //events
         context.addServlet(EventServlet.class, ServerConstants.EVENT_PATH);
         context.addServlet(EventServlet.class, ServerConstants.EVENT_CREATE_PATH);

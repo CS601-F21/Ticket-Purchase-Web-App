@@ -40,6 +40,26 @@ public class DatabaseManager {
     }
 
     /**
+     * updates a user's name for given email
+     * @param con connection to database
+     * @param name new name
+     * @param email email linked to slack
+     * @throws SQLException error in insertion
+     */
+    public static void executeUpdateUser(Connection con, String name, String email)
+            throws SQLException {
+
+        //update columns
+        String updateSql =
+                "UPDATE users SET name=? WHERE email=?;";
+        PreparedStatement updateStmt = con.prepareStatement(updateSql);
+        updateStmt.setString(1, name);
+        updateStmt.setString(2, email);
+
+        updateStmt.executeUpdate();
+    }
+
+    /**
      * A method to execute a database insert of new event.
      * @param con connection to server
      * @param name name of event (255 characters
@@ -83,39 +103,6 @@ public class DatabaseManager {
         insertContactStmt.setString(7, creator);
 
         insertContactStmt.executeUpdate();
-    }
-
-    /**
-     * return all details about specified event
-     * @param con connection to database
-     * @param id identifier of event
-     * @throws SQLException sql query failed
-     */
-    public static ResultSet executeSelectEvent(Connection con, int id) throws SQLException {
-        String selectAllContactsSql = "SELECT * FROM events WHERE id = '" + id + "';";
-        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
-        return selectAllContactsStmt.executeQuery();
-    }
-    /**
-     * return all events
-     * @param con connection to database
-     * @throws SQLException sql query failed
-     */
-    public static ResultSet executeSelectAllEvents(Connection con) throws SQLException {
-        String selectAllContactsSql = "SELECT name,id FROM events;";
-        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
-        return selectAllContactsStmt.executeQuery();
-    }
-    /**
-     * return all events created by user
-     * @param con connection to database
-     * @param email user's email
-     * @throws SQLException sql query failed
-     */
-    public static ResultSet executeSelectUsersEvents(Connection con, String email) throws SQLException {
-        String selectAllContactsSql = "SELECT name,id FROM events WHERE creator = '" + email + "';";
-        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
-        return selectAllContactsStmt.executeQuery();
     }
 
     /**
@@ -183,23 +170,85 @@ public class DatabaseManager {
     }
 
     /**
-     * updates a user's name for given email
+     * return all details about specified event
      * @param con connection to database
-     * @param name new name
-     * @param email email linked to slack
+     * @param id identifier of event
+     * @throws SQLException sql query failed
+     */
+    public static ResultSet executeSelectEvent(Connection con, int id) throws SQLException {
+        String selectAllContactsSql = "SELECT * FROM events WHERE id = '" + id + "';";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
+        return selectAllContactsStmt.executeQuery();
+    }
+    /**
+     * return all events
+     * @param con connection to database
+     * @throws SQLException sql query failed
+     */
+    public static ResultSet executeSelectAllEvents(Connection con) throws SQLException {
+        String selectAllContactsSql = "SELECT name,id FROM events;";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
+        return selectAllContactsStmt.executeQuery();
+    }
+    /**
+     * return all events created by user
+     * @param con connection to database
+     * @param email user's email
+     * @throws SQLException sql query failed
+     */
+    public static ResultSet executeSelectUsersEvents(Connection con, String email) throws SQLException {
+        String selectAllContactsSql = "SELECT name,id FROM events WHERE creator = '" + email + "';";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
+        return selectAllContactsStmt.executeQuery();
+    }
+
+    /**
+     * insert ticket to database
+     * @param con connection to database
+     * @param clientInfo information about client
+     * @param type ticket type
+     * @param eventId id of event
+     * @throws SQLException sql insert failed
+     */
+    public static void executeInsertTicket(Connection con, ClientInfo clientInfo, int type, int eventId)
+            throws SQLException{
+        String sql = "INSERT INTO tickets (owner, type, eventId) VALUES (?, ?, ?);";
+        PreparedStatement insertContactStmt = con.prepareStatement(sql);
+        insertContactStmt.setString(1, clientInfo.getEmail());
+        insertContactStmt.setInt(2, type);
+        insertContactStmt.setInt(3, eventId);
+        insertContactStmt.executeUpdate();
+    }
+    /**
+     * transfer ticket to new user
+     * @param con connection to database
+     * @param id ticket id
+     * @param email email of new user
      * @throws SQLException error in insertion
      */
-    public static void executeUpdateUser(Connection con, String name, String email)
+    public static void executeUpdateTicket(Connection con, int id, String email)
             throws SQLException {
 
         //update columns
         String updateSql =
-                "UPDATE users SET name=? WHERE email=?;";
+                "UPDATE tickets SET owner=email WHERE id=?;";
         PreparedStatement updateStmt = con.prepareStatement(updateSql);
-        updateStmt.setString(1, name);
-        updateStmt.setString(2, email);
+        updateStmt.setInt(2, id);
+        updateStmt.setString(1, email);
 
         updateStmt.executeUpdate();
+    }
+    /**
+     * return all tickets owned by user, as well as the event name
+     * @param con connection to database
+     * @param email user's email
+     * @throws SQLException sql query failed
+     */
+    public static ResultSet executeSelectUsersTickets(Connection con, String email) throws SQLException {
+        String selectAllContactsSql = "SELECT type, tickets.id, eventId, events.name FROM tickets " +
+                "JOIN events ON tickets.eventId = events.id WHERE owner = '" + email + "';";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
+        return selectAllContactsStmt.executeQuery();
     }
 
 }

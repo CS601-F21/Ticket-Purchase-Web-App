@@ -39,9 +39,9 @@ public class HomeServlet extends HttpServlet {
         resp.getWriter().println(ServerConstants.PAGE_HEADER);
 
         //show menu
-        resp.getWriter().println("<p><a href=\"/profile\">Account</a></p>");
-        resp.getWriter().println("<p><a href=\"/event\">Events</a></p>");
-        resp.getWriter().println("<p><a href=\"/logout\">Sign out</a></p>");
+        resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>Account</a></p>");
+        resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH + "'>Events</a></p>");
+        resp.getWriter().println("<p><a href='" + ServerConstants.LOGOUT_PATH + "'>Sign out</a></p>");
 
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }

@@ -1,6 +1,7 @@
 package cs601.project4.webserver.utilities;
 
 import com.google.gson.Gson;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.StringReader;
@@ -156,6 +157,19 @@ public class ServerUtils {
         // convert the id_token payload to a map
         Map<String, Object> payloadMap = gson.fromJson(new StringReader(payload), Map.class);
         return payloadMap;
+    }
+
+    /**
+     * Verifies that the request parameter both exists and is not empty
+     * @param req server request
+     * @param param parameter in question
+     * @return true if valid, false if not
+     */
+    public static boolean verifyParameter(HttpServletRequest req, String param){
+        if (req.getParameter(param) == null || req.getParameter(param).isEmpty()){
+            return false;
+        }
+        return true;
     }
 }
 

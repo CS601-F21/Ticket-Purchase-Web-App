@@ -1,9 +1,11 @@
 package cs601.project4.webserver;
 
 import cs601.project4.database.DBCPDataSource;
+import cs601.project4.database.DatabaseConstants;
 import cs601.project4.database.DatabaseManager;
 import cs601.project4.webserver.utilities.ClientInfo;
 import cs601.project4.webserver.utilities.ServerConstants;
+import cs601.project4.webserver.utilities.ServerUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,12 +48,50 @@ public class ProfileServlet extends HttpServlet {
         String path = req.getServletPath();
 
         switch (path) {
+            //create new ticket
+            case ServerConstants.PROFILE_PURCHASE_PATH:
+                if (!ServerUtils.verifyParameter(req, "id") || !ServerUtils.verifyParameter(req, "type")) {
+                    resp.getWriter().println("<p>Purchase unsuccessful.</p>");
+                    break;
+                } else {
+                    int type = Integer.parseInt(req.getParameter("type"));
+                    int eventId = Integer.parseInt(req.getParameter("id"));
+                    try (Connection connection = DBCPDataSource.getConnection()) {
+                        DatabaseManager.executeInsertTicket(connection, clientInfo, type, eventId);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    resp.getWriter().println("<p>Ticket purchased.</p>");
+                    resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_DETAILS_PATH + "?id=" + eventId
+                            + "'>Return to Event</a></p>");
+                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
+
+                    break;
+                }
+                //transfer ticket to new user
             case ServerConstants.PROFILE_TRANSFER_PATH:
-                resp.getWriter().println("<p>Ticket transferred.</p>");
+                if(!ServerUtils.verifyParameter(req, "id")){
+                    resp.getWriter().println("<p>Ticket unsuccessfully transferred.</p>");
+                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
+                //give form
+                } else if (!ServerUtils.verifyParameter(req, "email")){
+                    String form = "<form>" +
+                        "<label for='email'>Transfer Ticket to :</label><br>" +
+                        "<input type='text' id='email' name='email'><br>" +
+                        "<input type='hidden' id='id' name='id' value='" + req.getParameter("id") + "'>" +
+                        "<input type='submit' value='Submit'>" +
+                    "</form>";
+                    resp.getWriter().println(form);
+                } else {
+                    resp.getWriter().println("<p>Ticket transferred.</p>");
+                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
+                }
                 break;
             case ServerConstants.PROFILE_UPDATE_PATH:
-                if (req.getParameter("name") == null || req.getParameter("name").isEmpty()){
-                    resp.getWriter().println("<p>Update not successful.</p>");
+                if (!ServerUtils.verifyParameter(req, "name")){
+                    resp.getWriter().println("<p>Update unsuccessful.</p>");
+                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
                     break;
                 } else {
                     String name = req.getParameter("name");
@@ -80,7 +120,22 @@ public class ProfileServlet extends HttpServlet {
                 resp.getWriter().println(emailLine);
                 //display tickets owned by user
                 resp.getWriter().println("<h2>My tickets:</h2>");
-
+                try (Connection connection = DBCPDataSource.getConnection()) {
+                    ResultSet result = DatabaseManager.executeSelectUsersTickets(connection, clientInfo.getEmail());
+                    resp.getWriter().print("<p>");
+                    while (result.next()){
+                        String type = DatabaseConstants.ticketType.get(result.getInt(1));
+                        int eventId = result.getInt(3);
+                        int ticketId = result.getInt(2);
+                        String name = result.getString(4);
+                        String eventListing = type + ": <a href='/event/details?id=" + eventId + "'>" + name +
+                                "</a> <a href='/profile/transfer?id=" + ticketId + "'>Transfer</a><br/>";
+                        resp.getWriter().print(eventListing);
+                    }
+                    resp.getWriter().println("</p>");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 //display events created by user
                 resp.getWriter().println("<h2>My events:</h2>");
                 try (Connection connection = DBCPDataSource.getConnection()) {

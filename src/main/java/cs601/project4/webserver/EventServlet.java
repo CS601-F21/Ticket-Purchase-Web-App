@@ -1,6 +1,7 @@
 package cs601.project4.webserver;
 
 import cs601.project4.database.DBCPDataSource;
+import cs601.project4.database.DatabaseConstants;
 import cs601.project4.database.DatabaseManager;
 import cs601.project4.webserver.utilities.ClientInfo;
 import cs601.project4.webserver.utilities.ServerConstants;
@@ -119,7 +120,7 @@ public class EventServlet extends HttpServlet {
                 }
             case ServerConstants.EVENT_DETAILS_PATH:
                 //id not given
-                if(req.getParameter("id") == null){
+                if(!ServerUtils.verifyParameter(req, "id")){
                     resp.getWriter().println("<p>Event not found.</p>");
                     resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
                     break;
@@ -142,7 +143,7 @@ public class EventServlet extends HttpServlet {
                 break;
             case ServerConstants.EVENT_DELETE_PATH:
                 //id not given
-                if(req.getParameter("id") == null){
+                if(!ServerUtils.verifyParameter(req, "id")){
                     resp.getWriter().println("<p>Event not found.</p>");
                     resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
                     break;
@@ -300,12 +301,21 @@ public class EventServlet extends HttpServlet {
         resp.getWriter().println("Date: " + date + "<br/>");
         resp.getWriter().println("Time: " + hours + ":" + minutes + " " + ampm + "<br/>");
         //TODO purchase
-        resp.getWriter().println("Price: $" + ServerUtils.df.format(price) + "<br/>");
+        String normalTicketHtml = "Price: $" + ServerUtils.df.format(price) +
+                " <a href='/profile/purchase?id=" + eventId + "&type=" + DatabaseConstants.NORMAL_TICKET + "'>" +
+                "Purchase Ticket</a><br/>";
+        resp.getWriter().println(normalTicketHtml);
         if (studentPrice != null){
-            resp.getWriter().println("Student Price: $" + ServerUtils.df.format(studentPrice) + "<br/>");
+            String studentTicketHtml = "Student Price: $" + ServerUtils.df.format(studentPrice) +
+                    " <a href='/profile/purchase?id=" + eventId + "&type=" + DatabaseConstants.STUDENT_TICKET + "'>" +
+                    "Purchase Ticket</a><br/>";
+            resp.getWriter().println(studentTicketHtml);
         }
         if (vipPrice != null){
-            resp.getWriter().println("VIP Price: $" + ServerUtils.df.format(vipPrice) + "<br/>");
+            String vipTicketHtml = "VIP Price: $" + ServerUtils.df.format(vipPrice) +
+                    " <a href='/profile/purchase?id=" + eventId + "&type=" + DatabaseConstants.VIP_TICKET + "'>" +
+                    "Purchase Ticket</a><br/>";
+            resp.getWriter().println(vipTicketHtml);
         }
         resp.getWriter().println("</p>");
         //delete or modify event
@@ -323,10 +333,10 @@ public class EventServlet extends HttpServlet {
     private boolean verifyFormParameters(HttpServletRequest req){
         Map parameterMap = req.getParameterMap();
         Set parameters = parameterMap.keySet();
-        if (!parameters.contains("name") ||
-                !parameters.contains("datetime") ||
-                !parameters.contains("description") ||
-                !parameters.contains("base_price")){
+        if (!ServerUtils.verifyParameter(req, "name") ||
+                !ServerUtils.verifyParameter(req,"datetime") ||
+                !ServerUtils.verifyParameter(req,"description") ||
+                !ServerUtils.verifyParameter(req,"base_price")){
             return false;
         } else {
             return true;
