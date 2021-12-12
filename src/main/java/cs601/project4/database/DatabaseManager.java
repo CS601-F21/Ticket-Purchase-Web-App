@@ -16,11 +16,11 @@ public class DatabaseManager {
     /**
      * return given user
      * @param con connection to database
-     * @param clientInfo desired user
+     * @param email desired user
      * @return user row
      */
-    public static ResultSet executeSelectUser(Connection con, ClientInfo clientInfo) throws SQLException{
-        String sql = "SELECT * FROM users WHERE email = '" + clientInfo.getEmail() + "';";
+    public static ResultSet executeSelectUser(Connection con, String email) throws SQLException{
+        String sql = "SELECT * FROM users WHERE email = '" + email + "';";
         PreparedStatement stmt = con.prepareStatement(sql);
         return stmt.executeQuery();
     }
@@ -231,12 +231,26 @@ public class DatabaseManager {
 
         //update columns
         String updateSql =
-                "UPDATE tickets SET owner=email WHERE id=?;";
+                "UPDATE tickets SET owner=? WHERE id=?;";
         PreparedStatement updateStmt = con.prepareStatement(updateSql);
-        updateStmt.setInt(2, id);
+
         updateStmt.setString(1, email);
+        updateStmt.setInt(2, id);
 
         updateStmt.executeUpdate();
+    }
+
+    /**
+     * returns a ticket that has given id
+     * @param con connection to database
+     * @param id ticket id
+     * @return result
+     * @throws SQLException sql error
+     */
+    public static ResultSet executeSelectTicket(Connection con, int id) throws SQLException {
+        String selectSql = "SELECT * FROM tickets WHERE id = '" + id + "';";
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectSql);
+        return selectAllContactsStmt.executeQuery();
     }
     /**
      * return all tickets owned by user, as well as the event name
@@ -245,9 +259,9 @@ public class DatabaseManager {
      * @throws SQLException sql query failed
      */
     public static ResultSet executeSelectUsersTickets(Connection con, String email) throws SQLException {
-        String selectAllContactsSql = "SELECT type, tickets.id, eventId, events.name FROM tickets " +
+        String selectSql = "SELECT type, tickets.id, eventId, events.name FROM tickets " +
                 "JOIN events ON tickets.eventId = events.id WHERE owner = '" + email + "';";
-        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectAllContactsSql);
+        PreparedStatement selectAllContactsStmt = con.prepareStatement(selectSql);
         return selectAllContactsStmt.executeQuery();
     }
 

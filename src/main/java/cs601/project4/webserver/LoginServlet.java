@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet {
         } else {
 
             try (Connection connection = DBCPDataSource.getConnection()) {
-                ResultSet result = DatabaseManager.executeSelectUser(connection, clientInfo);
+                ResultSet result = DatabaseManager.executeSelectUser(connection, clientInfo.getEmail());
                 if (!result.next()){
                     //add new user to database
                     resp.getWriter().println("<p>Hello, " + clientInfo.getName() + ".</p>");

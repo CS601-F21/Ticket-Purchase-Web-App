@@ -90,7 +90,7 @@ public class EventServlet extends HttpServlet {
                 //id not given
                 if(req.getParameter("id") == null){
                     resp.getWriter().println("<p>Event not found.</p>");
-                    resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
+                    resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
                     break;
                 }
                 //verify parameters
@@ -102,7 +102,7 @@ public class EventServlet extends HttpServlet {
                         //event not found
                         if (!result.next()) {
                             resp.getWriter().println("<p>Event does not exist.</p>");
-                            resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
+                            resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
                             break;
                         } else {
                             //display edit form to user
@@ -122,7 +122,7 @@ public class EventServlet extends HttpServlet {
                 //id not given
                 if(!ServerUtils.verifyParameter(req, "id")){
                     resp.getWriter().println("<p>Event not found.</p>");
-                    resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
+                    resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
                     break;
                 }
                 try (Connection connection = DBCPDataSource.getConnection()) {
@@ -131,12 +131,12 @@ public class EventServlet extends HttpServlet {
                     //event not found
                     if (!result.next()) {
                         resp.getWriter().println("<p>Event does not exist.</p>");
-                        resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
+                        resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
                     } else {
                         //print details of event
                         showEventDetails(resp, clientInfo, result);
                     }
-                    resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
+                    resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -145,7 +145,7 @@ public class EventServlet extends HttpServlet {
                 //id not given
                 if(!ServerUtils.verifyParameter(req, "id")){
                     resp.getWriter().println("<p>Event not found.</p>");
-                    resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
+                    resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
                     break;
                 }
                 try (Connection connection = DBCPDataSource.getConnection()) {
@@ -154,16 +154,16 @@ public class EventServlet extends HttpServlet {
                     //event not found
                     if (!result.next()) {
                         resp.getWriter().println("<p>Event does not exist.</p>");
-                        resp.getWriter().println("<p><a href='/event'>View All Events</a></p>");
+                        resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_PATH +"'>View All Events</a></p>");
                     } else if (!result.getString(8).equals(clientInfo.getEmail())) {
                         //event does not belong to user
                         resp.getWriter().println("<p>You cannot delete an event you did not create.</p>");
-                        resp.getWriter().println("<p><a href='/profile'>View My Profile</a></p>");
+                        resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>View My Profile</a></p>");
                     } else {
                         //delete event
                         resp.getWriter().println("<p>Event deleted.</p>");
                         DatabaseManager.executeDeleteEvent(connection, eventId);
-                        resp.getWriter().println("<p><a href='/profile'>View My Profile</a></p>");
+                        resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>View My Profile</a></p>");
                     }
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
@@ -300,7 +300,7 @@ public class EventServlet extends HttpServlet {
         resp.getWriter().println("<p>");
         resp.getWriter().println("Date: " + date + "<br/>");
         resp.getWriter().println("Time: " + hours + ":" + minutes + " " + ampm + "<br/>");
-        //TODO purchase
+
         String normalTicketHtml = "Price: $" + ServerUtils.df.format(price) +
                 " <a href='/profile/purchase?id=" + eventId + "&type=" + DatabaseConstants.NORMAL_TICKET + "'>" +
                 "Purchase Ticket</a><br/>";
@@ -331,8 +331,6 @@ public class EventServlet extends HttpServlet {
      * @return true if valid, or false
      */
     private boolean verifyFormParameters(HttpServletRequest req){
-        Map parameterMap = req.getParameterMap();
-        Set parameters = parameterMap.keySet();
         if (!ServerUtils.verifyParameter(req, "name") ||
                 !ServerUtils.verifyParameter(req,"datetime") ||
                 !ServerUtils.verifyParameter(req,"description") ||

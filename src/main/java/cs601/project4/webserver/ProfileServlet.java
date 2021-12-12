@@ -65,33 +65,62 @@ public class ProfileServlet extends HttpServlet {
                     resp.getWriter().println("<p>Ticket purchased.</p>");
                     resp.getWriter().println("<p><a href='" + ServerConstants.EVENT_DETAILS_PATH + "?id=" + eventId
                             + "'>Return to Event</a></p>");
-                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
-
+                    resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>View Profile</a></p>");
                     break;
                 }
                 //transfer ticket to new user
             case ServerConstants.PROFILE_TRANSFER_PATH:
+                //validate parameters
                 if(!ServerUtils.verifyParameter(req, "id")){
                     resp.getWriter().println("<p>Ticket unsuccessfully transferred.</p>");
-                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
-                //give form
+                    resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>View Profile</a></p>");
+
                 } else if (!ServerUtils.verifyParameter(req, "email")){
+                    int id = Integer.parseInt(req.getParameter("id"));
+
+                    //verify user owns ticket
+                    try (Connection connection = DBCPDataSource.getConnection()) {
+                        if (!ServerUtils.verifyTicketOwner(connection, clientInfo.getEmail(), id)) {
+                            resp.getWriter().println("<p>Ticket does not belong to you.</p>");
+
+                        }
+                    }catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    //give transfer ticket form to user
                     String form = "<form>" +
                         "<label for='email'>Transfer Ticket to :</label><br>" +
                         "<input type='text' id='email' name='email'><br>" +
-                        "<input type='hidden' id='id' name='id' value='" + req.getParameter("id") + "'>" +
+                        "<input type='hidden' id='id' name='id' value='" + id + "'>" +
                         "<input type='submit' value='Submit'>" +
                     "</form>";
                     resp.getWriter().println(form);
                 } else {
-                    resp.getWriter().println("<p>Ticket transferred.</p>");
-                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
+                    String email = req.getParameter("email");
+                    int id = Integer.parseInt(req.getParameter("id"));
+                    //verify user exists
+                    try (Connection connection = DBCPDataSource.getConnection()) {
+                        ResultSet result = DatabaseManager.executeSelectUser(connection, email);
+                        if (!result.next()) {
+                            resp.getWriter().println("<p>User not found.</p>");
+                        } else if (!ServerUtils.verifyTicketOwner(connection, clientInfo.getEmail(), id)){
+                            resp.getWriter().println("<p>Ticket does not belong to you.</p>");
+                        } else {
+                            DatabaseManager.executeUpdateTicket(connection,
+                                    Integer.parseInt(req.getParameter("id")), req.getParameter("email"));
+                            resp.getWriter().println("<p>Ticket transferred.</p>");
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>View Profile</a></p>");
                 }
                 break;
             case ServerConstants.PROFILE_UPDATE_PATH:
                 if (!ServerUtils.verifyParameter(req, "name")){
                     resp.getWriter().println("<p>Update unsuccessful.</p>");
-                    resp.getWriter().println("<p><a href='/profile'>View Profile</a></p>");
+                    resp.getWriter().println("<p><a href='" + ServerConstants.PROFILE_PATH + "'>View Profile</a></p>");
                     break;
                 } else {
                     String name = req.getParameter("name");
@@ -118,6 +147,7 @@ public class ProfileServlet extends HttpServlet {
                 resp.getWriter().println(nameLine);
                 String emailLine = "<p>Email: " + clientInfo.getEmail() + "</p>";
                 resp.getWriter().println(emailLine);
+
                 //display tickets owned by user
                 resp.getWriter().println("<h2>My tickets:</h2>");
                 try (Connection connection = DBCPDataSource.getConnection()) {
@@ -128,8 +158,8 @@ public class ProfileServlet extends HttpServlet {
                         int eventId = result.getInt(3);
                         int ticketId = result.getInt(2);
                         String name = result.getString(4);
-                        String eventListing = type + ": <a href='/event/details?id=" + eventId + "'>" + name +
-                                "</a> <a href='/profile/transfer?id=" + ticketId + "'>Transfer</a><br/>";
+                        String eventListing = "<a href='/event/details?id=" + eventId + "'>" + name +
+                                "</a> " + type + " <a href='/profile/transfer?id=" + ticketId + "'>Transfer</a><br/>";
                         resp.getWriter().print(eventListing);
                     }
                     resp.getWriter().println("</p>");
@@ -155,4 +185,6 @@ public class ProfileServlet extends HttpServlet {
         resp.getWriter().println(ServerConstants.HOME_PAGE_LINK);
         resp.getWriter().println(ServerConstants.PAGE_FOOTER);
     }
+
+
 }

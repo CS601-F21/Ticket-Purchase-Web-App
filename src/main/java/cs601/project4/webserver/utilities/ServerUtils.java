@@ -1,10 +1,14 @@
 package cs601.project4.webserver.utilities;
 
 import com.google.gson.Gson;
+import cs601.project4.database.DatabaseManager;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.StringReader;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.Map;
@@ -167,6 +171,25 @@ public class ServerUtils {
      */
     public static boolean verifyParameter(HttpServletRequest req, String param){
         if (req.getParameter(param) == null || req.getParameter(param).isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Verifies that ticket belongs to user
+     * @param con connection to database
+     * @param email email of user
+     * @param id id of ticket
+     * @return true if ticket belongs to user, or false
+     * @throws SQLException sql error
+     */
+    public static boolean verifyTicketOwner(Connection con, String email, int id) throws SQLException {
+        ResultSet results = DatabaseManager.executeSelectTicket(con, id);
+        if (!results.next()){
+            return false;
+        }
+        if (!results.getString(2).equals(email)){
             return false;
         }
         return true;
