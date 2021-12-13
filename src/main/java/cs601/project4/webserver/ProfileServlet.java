@@ -87,7 +87,7 @@ public class ProfileServlet extends HttpServlet {
                         throwables.printStackTrace();
                     }
                     //give transfer ticket form to user
-                    String form = "<form>" +
+                    String form = "<form action='" + ServerConstants.PROFILE_TRANSFER_PATH + "'>" +
                         "<label for='email'>Transfer Ticket to :</label><br>" +
                         "<input type='text' id='email' name='email'><br>" +
                         "<input type='hidden' id='id' name='id' value='" + id + "'>" +

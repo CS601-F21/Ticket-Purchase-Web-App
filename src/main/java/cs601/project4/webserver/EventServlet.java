@@ -311,7 +311,7 @@ public class EventServlet extends HttpServlet {
         }
         if (vipPrice != null) {
             String vipTicketHtml = "VIP Price: $" + ServerUtils.df.format(vipPrice) +
-                    " <a href='" + ServerConstants.EVENT_CREATE_PATH + "?id=" + eventId +
+                    " <a href='" + ServerConstants.PROFILE_PURCHASE_PATH + "?id=" + eventId +
                     "&type=" + DatabaseConstants.VIP_TICKET + "'>Purchase Ticket</a><br/>";
             resp.getWriter().println(vipTicketHtml);
         }
@@ -378,11 +378,22 @@ public class EventServlet extends HttpServlet {
                     + "?page=" + (page - 1) + "&pageSize=" + pageSize + "'>" + "Previous Page" + "</a> ";
             resp.getWriter().print(previousPage);
         }
+        boolean moreResults = false;
         if (result.next()){
+            moreResults = true;
             String nextPage = "<a href='" + ServerConstants.EVENT_PATH
                     + "?page=" + (page + 1) + "&pageSize=" + pageSize + "'>" + "Next Page" + "</a>";
-            resp.getWriter().print(nextPage);
+            resp.getWriter().println(nextPage);
         }
+        //set page size
+
+        String pageForm = "<form action='" + ServerConstants.EVENT_PATH + "'>" +
+                "<label for='pageSize'>Events Per Page:</label><br>" +
+                "<input type='text' id='pageSize' name='pageSize' value ='" + pageSize + "'><br>" +
+                "<input type='submit' value='Submit'>" +
+                "</form>";
+        resp.getWriter().println(pageForm);
+
 
         resp.getWriter().println("</p>");
     }
