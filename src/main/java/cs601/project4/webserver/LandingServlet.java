@@ -56,7 +56,6 @@ public class LandingServlet extends HttpServlet {
 
         resp.setStatus(HttpStatus.OK_200);
         PrintWriter writer = resp.getWriter();
-        //TODO::
         writer.println(ServerConstants.PAGE_HEADER);
         writer.println("<p>Please log in with Slack:</p>");
         writer.println("<a href=\""+url+"\"><img src=\"" + ServerConstants.BUTTON_URL +"\"/></a>");

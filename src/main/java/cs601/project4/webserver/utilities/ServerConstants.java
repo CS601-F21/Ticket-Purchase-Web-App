@@ -43,15 +43,18 @@ public class ServerConstants {
 
     public static final int PAGE_SIZE = 10;
 
-    public static final String HOME_PAGE_LINK = "<p><a href='/home'>Return to Home Page</a></p>";
+    public static final String LOGO_URL = "https://i.imgur.com/uh6LN4P.png";
+
+    public static final String HOME_PAGE_LINK = "<p><a href='" + HOME_PATH + "'>Return to Home Page</a></p>";
     public static final String PAGE_HEADER = """
         <!DOCTYPE html>
-        <html xmlns="http://www.w3.org/1999/xhtml">
+        <html xmlns='http://www.w3.org/1999/xhtml'>
         <head>
-          <title>Log in with Slack</title>
+          <title>Ticket-Get-It</title>
         </head>
-        <body>
-        <h1>Ticket-Get-It</h1>
+        <body style='color:#3e4444;background:#c5d5c5'>
+        <img src='""" + LOGO_URL + """
+        ' alt='Ticket-Get-It'>
         """;
 
     public static final String PAGE_FOOTER = """
@@ -60,30 +63,31 @@ public class ServerConstants {
         </html>""";
 
     public static final String EVENT_FORM = """
-        <form action="/event/create">
-          <label for="name">Event name:</label><br/>
-          <input type="text" id="name" name="name" maxlength="255" required="true">
+        <form action='""" + EVENT_CREATE_PATH + """
+        '>
+          <label for='name'>Event name:</label><br/>
+          <input type='text' id='name' name='name' maxlength='255' required='true'>
           <br/>
-          <label for="description">Description:</label><br/>
-          <textarea rows = "5" cols = "60" name = "description" maxlength="512" required="true">
+          <label for='description'>Description:</label><br/>
+          <textarea rows = "5" cols = "60" name = 'description' maxlength='512' required='true'>
           </textarea>
           <br/>
-          <label for="datetime">Date and time:</label><br/>
-          <input type="datetime-local" id="datetime" name="datetime" min='2021-01-01T00:00' required="true">
+          <label for='datetime'>Date and time:</label><br/>
+          <input type='datetime-local' id='datetime' name='datetime' min='2021-01-01T00:00' required='true'>
           <br/>
-          <label for="base_price">Base Price:</label><br/>
-          <input type="text" id="base_price" name="base_price"
-            pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99" required="true">
+          <label for='base_price'>Base Price:</label><br/>
+          <input type='text' id="base_price" name='base_price'
+            pattern='[0-9]{1,4}([.][0-9]{2})?' title='Price from 0.00-9999.99' required='true'>
             <br/>
-          <label for="student_price">Student Price (optional):</label><br/>
-          <input type="text" id="student_price" name="student_price"
-            pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99">
+          <label for='student_price'>Student Price (optional):</label><br/>
+          <input type='text' id='student_price' name='student_price'
+            pattern='[0-9]{1,4}([.][0-9]{2})?' title='Price from 0.00-9999.99'>
             <br/>
-          <label for="vip_price">VIP Price (optional):</label><br/>
-          <input type="text" id="vip_price" name="vip_price"
-            pattern="[0-9]{1,4}([.][0-9]{2})?" title="Price from 0.00-9999.99">
+          <label for='vip_price'>VIP Price (optional):</label><br/>
+          <input type='text' id='vip_price' name='vip_price'
+            pattern='[0-9]{1,4}([.][0-9]{2})?' title='Price from 0.00-9999.99'>
             <br/>
-          <input type="submit" value="Submit">
+          <input type='submit' value='Submit'>
         </form>
         """;
 

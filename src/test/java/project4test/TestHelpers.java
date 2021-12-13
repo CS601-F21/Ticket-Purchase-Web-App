@@ -59,7 +59,7 @@ public class TestHelpers {
         context.addServlet(LandingServlet.class, "/");
         // Once authenticated, Slack will redirect the user back to /login
         context.addServlet(LoginServlet.class, "/login");
-        //TODO
+
         // handle logout
         context.addServlet(LogoutServlet.class, "/logout");
 
@@ -76,22 +76,5 @@ public class TestHelpers {
         serverThread.start();
         return serverThread;
 
-    }
-
-    /**
-     * send /shutdown to server, block until thread terminates
-     */
-    //TODO?
-    public void shutdown(int port, Thread thread){
-        HttpClient client = HttpClient.newHttpClient();
-        String uri = "http://localhost:" + port + "/shutdown";
-        HttpRequest request = HttpRequest.newBuilder(URI.create(uri)).build();
-
-        try {
-            client.send(request, HttpResponse.BodyHandlers.ofString());
-            thread.join();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

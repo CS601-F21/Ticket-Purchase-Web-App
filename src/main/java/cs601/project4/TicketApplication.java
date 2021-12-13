@@ -14,11 +14,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*TODO:
-    paginate events
-    branding
- */
-
 /**
  * Driver class for Ticket purchase web application
  * source: https://github.com/CS601-F21/code-examples/blob/main/JettyLoginServer/src/main/java/example/login/LoginServer.java
