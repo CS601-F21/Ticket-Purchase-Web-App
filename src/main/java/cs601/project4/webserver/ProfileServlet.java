@@ -134,7 +134,8 @@ public class ProfileServlet extends HttpServlet {
             default:
                 //profile
                 String nameLine = """
-                        <form action='/profile/update'>
+                        <form action='""" + ServerConstants.PROFILE_UPDATE_PATH + """
+                          '>
                           <label for='name'>
                           <p>Name: """ +
                         clientInfo.getName() + """
@@ -157,8 +158,10 @@ public class ProfileServlet extends HttpServlet {
                         int eventId = result.getInt(3);
                         int ticketId = result.getInt(2);
                         String name = result.getString(4);
-                        String eventListing = "<a href='/event/details?id=" + eventId + "'>" + name +
-                                "</a> " + type + " <a href='/profile/transfer?id=" + ticketId + "'>Transfer</a><br/>";
+                        String eventListing = "<a href='" + ServerConstants.EVENT_DETAILS_PATH +
+                                "?id=" + eventId + "'>" + name + "</a> " + type +
+                                " <a href='" + ServerConstants.PROFILE_TRANSFER_PATH +
+                                "?id=" + ticketId + "'>Transfer</a><br/>";
                         resp.getWriter().print(eventListing);
                     }
                     resp.getWriter().println("</p>");
@@ -173,7 +176,8 @@ public class ProfileServlet extends HttpServlet {
                     while (result.next()){
                         String eventName = result.getString(1);
                         int id = result.getInt(2);
-                        String eventListing = "<a href='/event/details?id=" + id + "'>" + eventName + "</a><br/>";
+                        String eventListing = "<a href='" + ServerConstants.EVENT_DETAILS_PATH +
+                                "?id=" + id + "'>" + eventName + "</a><br/>";
                         resp.getWriter().print(eventListing);
                     }
                     resp.getWriter().println("</p>");

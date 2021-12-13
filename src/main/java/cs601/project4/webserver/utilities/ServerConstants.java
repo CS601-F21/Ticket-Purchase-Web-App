@@ -41,6 +41,7 @@ public class ServerConstants {
     public static final String EVENT_MODIFY_PATH = EVENT_PATH + "/modify";
     public static final String LOGOUT_PATH = "/logout";
 
+    public static final int PAGE_SIZE = 10;
 
     public static final String HOME_PAGE_LINK = "<p><a href='/home'>Return to Home Page</a></p>";
     public static final String PAGE_HEADER = """
